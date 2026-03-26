@@ -10,7 +10,6 @@ A professional backend REST API for a e-commerce store, built with Laravel 12 an
 -   **Checkout System:** Atomic database transactions to ensure data integrity during purchase.
 -   **User Profile:** Management of profile details and a multi-address book system.
 -   **Security:** API Token authentication using Laravel Sanctum.
--   **API Documentation:** Auto-generated interactive documentation using Scribe.
 
 ## 🛠️ Prerequisites
 
@@ -48,12 +47,6 @@ A professional backend REST API for a e-commerce store, built with Laravel 12 an
 
     ```Bash
     ./vendor/bin/sail artisan storage:link
-    ```
-
-6. \*\*Generate the API Documentation:
-
-    ```Bash
-    ./vendor/bin/sail artisan scribe:generate
     ```
 
 ## Credentials
