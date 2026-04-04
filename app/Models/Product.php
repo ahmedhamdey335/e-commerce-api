@@ -16,9 +16,15 @@ class Product extends Model
         'price',
         'stock',
         'image',
+        'user_id',
     ];
+
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function seller(){
+        return $this->belongsTo(User::class,'user_id');
     }
 }

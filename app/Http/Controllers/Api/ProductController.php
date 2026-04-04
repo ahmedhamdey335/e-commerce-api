@@ -17,8 +17,7 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request){
         $query = Product::query();
         $query->with('categories');
 
@@ -56,14 +55,16 @@ class ProductController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create products.
      */
-    public function store(StoreProductRequest $request)
-    {
+    public function store(StoreProductRequest $request){
+        $this->authorize('create', Product::class);
+        
         // Validation is already done by StoreProductRequest!
         $validatedData = $request->validated();
         $validatedData['slug'] = Str::slug($validatedData['name']);
         $validatedData['price'] = $validatedData['price'] * 100;
+        $validatedData ['user_id'] = auth()->id;
 
         // Handle image upload
         if ($request->hasFile('image')) {
@@ -95,8 +96,9 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, Product $product)
-    {
+    public function update(UpdateProductRequest $request, Product $product){
+        $this->authorize('update', Product::class);
+
         $validatedData = $request->validated();
         
         if (isset($validatedData['name'])) {
@@ -131,9 +133,44 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
-    {
+    public function destroy(Product $product){
+        $this->authorize('delete', Product::class);
+
+        Storage::disk('public')->delete($product->image);
+
         $product->delete();
         return response()->noContent();
+    }
+
+    // Search products
+    public function search(Request $request) {
+        $query = $request->input('q');
+        $productsQuery = Product::query();
+
+        if ($query) {
+            $productsQuery->where(function($q) use ($query) {
+                $q->where('name', 'like', '%' . $query . '%')
+                ->orWhere('description', 'like', '%' . $query . '%');
+            });
+        }
+
+        // Category
+        if ($request->has('category_id')) {
+            $productsQuery->whereHas('categories', function ($q) use ($request) {
+                $q->where('categories.id', $request->input('category_id'));
+            });
+        }
+
+        // Sorting
+        if ($request->has('min_price')) {
+            $productsQuery->where('price', '>=', $request->input('min_price') * 100);
+        }
+        if ($request->has('max_price')) {
+            $productsQuery->where('price', '<=', $request->input('max_price') * 100);
+        }
+
+        return ProductResource::collection(
+            $productsQuery->with('categories')->paginate(10)
+        );
     }
 }

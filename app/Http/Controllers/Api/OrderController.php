@@ -10,15 +10,66 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    public function checkout(Request $request)
-    {
+    // Browse orders for admin and customer
+    public function index(Request $request){
+        $user = $request->user();
+
+        // Admin view
+        if ($user->isAdmin()) {
+            // Admin can see all orders, with relationships loaded
+            return Order::with('user', 'items.product')->latest()->paginate(10);
+        }
+
+        // Seller view (his products' orders)
+        if ($user->isSeller()) {
+            return Order::with('user', 'items.products')->latest()->paginate(10);
+        }
+
+        // Customer view
+        $query = $user->orders()->with('items.product')->latest();
+        if ($request->filter === 'active') {
+            $query->whereIn('status', ['pending', 'processing', 'shipped']);
+        } elseif ($request->filter === 'previous') {
+            $query->whereIn('status', ['delivered', 'cancelled']);
+        }
+        return $query->get();
+    }
+
+    // View placed order
+    public function show(Request $request , Order $order){
+        $this->authorize('view', Order::class);
+
+        return response()->json(
+            $order->load('items.product', 'user')
+        );
+    }
+
+    // Update pleced order's status
+    public function updateStatus(Request $request, Order $order){
+        $this->authorize('update', $order);
+
+        $request->validate([
+            'status' => 'required|in:pending,processing,shipped,delivered,cancelled',
+        ]);
+
+        $order->update(['status' => $request->status]);
+
+        return response()->json([
+            'message' => 'Order status updated successfully',
+            'order' => $order,
+        ]);
+    }
+
+    // Checkout by customer
+    public function checkout(Request $request){
+        $this->authorize('create', $order);
         // Validate address
         $request->validate([
             'address_id' => 'required|exists:addresses,id',
         ]);
-
+        
         $user = $request->user();
-
+        
         // Ensure the address belongs to the user
         $address = $user->addresses()->where('id', $request->address_id)->first();
         if (!$address) {
@@ -39,19 +90,24 @@ class OrderController extends Controller
                 return ($item->product->price * $item->quantity);
             });
             
-            $fulladdress = "{$address->title}, {$address->address}, {$address->city}, {$address->postal_code}, {$address->country}";
+            $fullAddress = "{$address->title},
+                {$address->address},
+                {$address->city}, 
+                {$address->postal_code}, 
+                {$address->country}";
+            
             // Create Order Record
             $order = Order::create([
                 'user_id' => $user->id,
                 'status' => 'pending',
-                'address' => $fulladdress,
+                'address' => $fullAddress,
                 'total_price' => $total / 100,
             ]);
             //Move products from Cart to OrderItems
             foreach ($cartItems as $cartItem) {
                 // Check stock one last time
                 if ($cartItem->product->stock < $cartItem->quantity) {
-                    throw new \Exception("Product {$cartItem->product->name} is out of stock");
+                    abort(400, "Product {$cartItem->product->name} is out of stock");
                 }
                 // deduct stock
                 $cartItem->product->decrement('stock', $cartItem->quantity);
@@ -70,10 +126,7 @@ class OrderController extends Controller
                     'message' => 'Order placed successfully',
                     'order_id' => $order->id,
                 ], 201);
+                //---end transaction---
         });
-    }
-                        //---end transaction---
-    public function index(Request $request){
-    return $request->user()->orders()->with('items.product')->latest()->get();
     }
 }

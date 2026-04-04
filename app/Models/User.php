@@ -48,25 +48,36 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
     // helper methods to check user role
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
     }
-    public function isCustomer(): bool
-    {
+
+    public function isSeller(): bool {
+        return $this->role === 'seller';
+    }
+
+    public function isCustomer(): bool {
         return $this->role === 'customer';
     }
 
     // relationship with cart items
-    public function cartItems()
-    {
+    public function products() {
+        return $this->hasMany(Product::class);
+    }
+
+    public function cartItems() {
         return $this->hasMany(CartItem::class);
     }
 
+    public function orders () {
+        return $this->hasMany(Order::class);
+    }
+
     // address relationship
-    public function addresses() 
-    {
+    public function addresses() {
         return $this->hasMany(Address::class);
     }
 }
