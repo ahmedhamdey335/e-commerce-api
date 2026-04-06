@@ -9,8 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class CheckRole
 {
     /**
-     * Handle an incoming request.
-     *  Usage in routes: middleware('role:admin') or middleware('role:admin,seller')
+     * Handle an incoming request by role.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */

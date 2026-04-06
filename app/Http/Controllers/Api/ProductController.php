@@ -14,9 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Browse products.
     public function index(Request $request){
         $query = Product::query();
         $query->with('categories');
@@ -54,9 +52,7 @@ class ProductController extends Controller
         return ProductResource::collection($query->paginate(10));
     }
 
-    /**
-     * Create products.
-     */
+    // Create products.
     public function store(StoreProductRequest $request){
         $this->authorize('create', Product::class);
         
@@ -64,7 +60,7 @@ class ProductController extends Controller
         $validatedData = $request->validated();
         $validatedData['slug'] = Str::slug($validatedData['name']);
         $validatedData['price'] = $validatedData['price'] * 100;
-        $validatedData ['user_id'] = auth()->id;
+        $validatedData['user_id'] = auth()->id();
 
         // Handle image upload
         if ($request->hasFile('image')) {
@@ -85,19 +81,14 @@ class ProductController extends Controller
         return new ProductResource($product);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Product $product)
-    {
+    // View a single product (public).
+    public function show(Product $product){
         return new ProductResource($product->load('categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // Update product.
     public function update(UpdateProductRequest $request, Product $product){
-        $this->authorize('update', Product::class);
+        $this->authorize('update', $product);
 
         $validatedData = $request->validated();
         
@@ -130,11 +121,9 @@ class ProductController extends Controller
         return new ProductResource($product);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // Delete product.
     public function destroy(Product $product){
-        $this->authorize('delete', Product::class);
+        $this->authorize('delete', $product);
 
         Storage::disk('public')->delete($product->image);
 

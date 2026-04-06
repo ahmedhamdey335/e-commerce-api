@@ -27,12 +27,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', function (Request $request) {
         return $request->user();
+    });
 
     // Get orders for users by role
     Route::get('/orders', [OrderController::class, 'index']);
     Route::get('/orders/{order}', [OrderController::class, 'show']);
-        
-    });
 
     // Customer Routes
     Route::middleware('role:customer')->group(function () {
@@ -43,7 +42,6 @@ Route::middleware('auth:sanctum')->group(function () {
     
         // Checkout & orders
         Route::post('/checkout', [OrderController::class, 'checkout']);
-        Route::get('/orders', [OrderController::class, 'index']);
 
         // Address routes
         Route::get('/addresses', [AddressController::class, 'index']);

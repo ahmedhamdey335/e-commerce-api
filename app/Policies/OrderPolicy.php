@@ -9,20 +9,14 @@ use Illuminate\Auth\Access\Response;
 class OrderPolicy
 {
     /**
-     * View all orders.
-     */
-    public function viewAny(User $user): bool
-    {
-        return $user->isAdmin();
-    }
-
-    /**
      * View a single order.
      */
     public function view(User $user, Order $order): bool
     {
         return $user->isAdmin() ||
-            ($user->isCustomer() && $user->id === $order->user_id);
+            ($user->isCustomer() && $user->id === $order->user_id) ||
+            ($user->isSeller() && $order->items()->contains(
+                fn($item)=>$item->product?->user_id === $user->id));
     }
 
     /**

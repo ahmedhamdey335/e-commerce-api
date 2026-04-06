@@ -5,24 +5,38 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Http\Resources\SellerOrderResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 
 class OrderController extends Controller
 {
     // Browse orders for admin and customer
     public function index(Request $request){
+        $this->authorize('viewAny', Order::class);
         $user = $request->user();
 
         // Admin view
         if ($user->isAdmin()) {
             // Admin can see all orders, with relationships loaded
-            return Order::with('user', 'items.product')->latest()->paginate(10);
+            return OrderResource::collection(
+                Order::with('user', 'items.product')->latest()->paginate(10)
+            );
         }
 
-        // Seller view (his products' orders)
+        // Seller view (orders that include at least one of their products)
         if ($user->isSeller()) {
-            return Order::with('user', 'items.products')->latest()->paginate(10);
+            $orders = Order::with('items.product')
+                ->whereHas('items', function ($query) use ($user) {
+                    $query->whereHas('product', function ($query) use ($user) {
+                        $query->where('user_id', $user->id);
+                    });
+                })
+                ->latest()
+                ->paginate(10);
+
+            return SellerOrderResource::collection($orders);
         }
 
         // Customer view
@@ -32,16 +46,16 @@ class OrderController extends Controller
         } elseif ($request->filter === 'previous') {
             $query->whereIn('status', ['delivered', 'cancelled']);
         }
-        return $query->get();
+        return OrderResource::collection($query->get());
     }
 
     // View placed order
     public function show(Request $request , Order $order){
-        $this->authorize('view', Order::class);
+        $order>load('items.product');
 
-        return response()->json(
-            $order->load('items.product', 'user')
-        );
+        $this->authorize('view', $order);
+
+        return new OrderResource($order);
     }
 
     // Update pleced order's status
@@ -56,13 +70,13 @@ class OrderController extends Controller
 
         return response()->json([
             'message' => 'Order status updated successfully',
-            'order' => $order,
+            'order' => new OrderResource($order),
         ]);
     }
 
     // Checkout by customer
     public function checkout(Request $request){
-        $this->authorize('create', $order);
+        $this->authorize('create', Order::class);
         // Validate address
         $request->validate([
             'address_id' => 'required|exists:addresses,id',
