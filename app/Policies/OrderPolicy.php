@@ -15,7 +15,7 @@ class OrderPolicy
     {
         return $user->isAdmin() ||
             ($user->isCustomer() && $user->id === $order->user_id) ||
-            ($user->isSeller() && $order->items()->contains(
+            ($user->isSeller() && $order->items->contains(
                 fn($item)=>$item->product?->user_id === $user->id));
     }
 

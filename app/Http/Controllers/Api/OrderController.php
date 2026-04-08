@@ -14,7 +14,6 @@ class OrderController extends Controller
 {
     // Browse orders for admin and customer
     public function index(Request $request){
-        $this->authorize('viewAny', Order::class);
         $user = $request->user();
 
         // Admin view

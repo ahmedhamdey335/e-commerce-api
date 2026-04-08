@@ -19,7 +19,7 @@ class OrderResource extends JsonResource
         return [
             'id' => $this->id,
             'status' => $this->status,
-            'total_price' => number_format($this->total_price / 100, 2),
+            'total_price' => number_format($this->total_price, 2),
             'address' => $this->address,
             'created_at' => $this->created_at,
             'items' => OrderItemResource::collection($this->whenLoaded('items')),
