@@ -43,7 +43,7 @@ class CartController extends Controller
         return new CartItemResource($cartItem->load('product'));
     }
     public function destroy(Request $request, CartItem $cartItem) {
-        // Ensure the cart item belongs to the authenticated user
+        // Ensure the cart belongs to the authenticated user
         if ($request->user()->id !== $cartItem->user_id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }

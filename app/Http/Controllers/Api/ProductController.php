@@ -116,7 +116,7 @@ class ProductController extends Controller
         $product->update($productData);
 
         if ($request->has('categories')) {
-            $product->categories()->sync($categoryIds);
+            $product->categories()->syncWithoutDetaching($categoryIds);
         }
         return new ProductResource($product);
     }
@@ -125,7 +125,9 @@ class ProductController extends Controller
     public function destroy(Product $product){
         $this->authorize('delete', $product);
 
-        Storage::disk('public')->delete($product->image);
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
 
         $product->delete();
         return response()->noContent();

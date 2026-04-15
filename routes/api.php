@@ -68,6 +68,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 
         // Order Status
-        Route::patch('/orders/{order}/status', [OrderController::class, 'updatestatus']);
+        Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus']);
     });
 });

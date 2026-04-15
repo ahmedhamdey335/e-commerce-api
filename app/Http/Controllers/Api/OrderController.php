@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Http\Resources\OrderResource;
 use App\Http\Resources\SellerOrderResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -50,7 +51,7 @@ class OrderController extends Controller
 
     // View placed order
     public function show(Request $request , Order $order){
-        $order>load('items.product');
+        $order->load('items.product');
 
         $this->authorize('view', $order);
 
