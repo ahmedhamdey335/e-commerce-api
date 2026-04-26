@@ -14,9 +14,9 @@ class CartController extends Controller
     public function index(Request $request)
     {
         $items = $request->user()->cartItems()->with('product')->get();
-        return CartItemResource::collection($items);
+        return $this->success(CartItemResource::collection($items));
     }
-    
+
     public function store(AddToCartRequest $request)
     {
         $validated = $request->validated();
@@ -24,7 +24,7 @@ class CartController extends Controller
         // Check product stock
         $product = Product::findOrFail($validated['product_id']);
         if ($product->stock < $validated['quantity']) {
-            return response()->json(['message' => 'not enough stock available'], 400);
+            return $this->error('Not enough stock available', 400);
         }
         // Check if item already in cart
         $cartItem = CartItem::where('user_id', $user->id)
@@ -40,16 +40,15 @@ class CartController extends Controller
                 'quantity' => $validated['quantity'],
             ]);
         }
-        return new CartItemResource($cartItem->load('product'));
+        return $this->success(new CartItemResource($cartItem->load('product')), 'Item added to cart successfully', 201);
     }
+    
     public function destroy(Request $request, CartItem $cartItem) {
         // Ensure the cart belongs to the authenticated user
         if ($request->user()->id !== $cartItem->user_id) {
-            return response()->json(['message' => 'Unauthorized'], 403);
+            return $this->error('Unauthorized', 403);
         }
         $cartItem->delete();
-        return response()->noContent();
-
+        return $this->success(null, 'Item removed from cart successfully', 204);
     }
-
 }

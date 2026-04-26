@@ -20,9 +20,9 @@ class OrderController extends Controller
         // Admin view
         if ($user->isAdmin()) {
             // Admin can see all orders, with relationships loaded
-            return OrderResource::collection(
+            return $this->success(OrderResource::collection(
                 Order::with('user', 'items.product')->latest()->paginate(10)
-            );
+            ));
         }
 
         // Seller view (orders that include at least one of their products)
@@ -36,7 +36,7 @@ class OrderController extends Controller
                 ->latest()
                 ->paginate(10);
 
-            return SellerOrderResource::collection($orders);
+                return $this->success(SellerOrderResource::collection($orders));
         }
 
         // Customer view
@@ -46,7 +46,7 @@ class OrderController extends Controller
         } elseif ($request->filter === 'previous') {
             $query->whereIn('status', ['delivered', 'cancelled']);
         }
-        return OrderResource::collection($query->get());
+        return $this->success(OrderResource::collection($query->get()));
     }
 
     // View placed order
@@ -55,7 +55,7 @@ class OrderController extends Controller
 
         $this->authorize('view', $order);
 
-        return new OrderResource($order);
+        return $this->success(new OrderResource($order));
     }
 
     // Update pleced order's status
@@ -68,10 +68,7 @@ class OrderController extends Controller
 
         $order->update(['status' => $request->status]);
 
-        return response()->json([
-            'message' => 'Order status updated successfully',
-            'order' => new OrderResource($order),
-        ]);
+        return $this->success(new OrderResource($order), 'Order status updated successfully');
     }
 
     // Checkout by customer
@@ -87,14 +84,14 @@ class OrderController extends Controller
         // Ensure the address belongs to the user
         $address = $user->addresses()->where('id', $request->address_id)->first();
         if (!$address) {
-            return response()->json(['message' => 'Invalid address'], 400);
+            return $this->error('Invalid address', 400);
         }
         
         // Get the user's cart
         $cartItems = $user->cartItems()->with('product')->get();
 
         if ($cartItems->isEmpty()) {
-            return response()->json(['message' => 'Cart is empty'], 400);
+            return $this->error('Cart is empty', 400);
         }
 
                         //---start transaction---
@@ -136,10 +133,7 @@ class OrderController extends Controller
                 // Clear user's cart
                 $user->cartItems()->delete();
                 
-                return response()->json([
-                    'message' => 'Order placed successfully',
-                    'order_id' => $order->id,
-                ], 201);
+                return $this->success(['order_id' => $order->id], 'Order placed successfully', 201);
                 //---end transaction---
         });
     }

@@ -17,7 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return CategoryResource::collection(Category::all());
+        return $this->success(CategoryResource::collection(Category::all()));
     }
 
     /**
@@ -28,7 +28,7 @@ class CategoryController extends Controller
         $validatedData = $request->validated();
         $validatedData['slug'] = Str::slug($validatedData['name']);
         $category = Category::create($validatedData);
-        return new CategoryResource($category);
+        return $this->success(new CategoryResource($category), 'Category created successfully', 201);
     }
 
     /**
@@ -36,7 +36,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return new CategoryResource($category->load('products'));
+        return $this->success(new CategoryResource($category->load('products')));
     }
 
     /**
@@ -50,7 +50,7 @@ class CategoryController extends Controller
             $validatedData['slug'] = Str::slug($validatedData['name']);
         }
         $category->update($validatedData);
-        return new CategoryResource($category);
+        return $this->success(new CategoryResource($category), 'Category updated successfully');
     }
 
     /**
@@ -59,6 +59,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return response()->noContent();
+        return $this->success(null, 'Category deleted successfully', 204);
     }
 }

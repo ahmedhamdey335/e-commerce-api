@@ -27,8 +27,7 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
-            'message' => 'Registration successful',
+        return $this->success([
             'token' => $token,
             'token_type' => 'Bearer',
             'user' => [
@@ -37,7 +36,7 @@ class AuthController extends Controller
                 'email'=> $user->email,
                 'role' => $user->role,
                 ],
-            ],201);
+            ],'Registration successful',201);
 
     }
     // Login an existing user
@@ -51,15 +50,12 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+            return $this->error('The provided credentials are incorrect.', 401);
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
-            'message' => 'Login successful',
+        return $this->success([
             'token' => $token,
             'token_type' => 'Bearer',
             'user' => [
@@ -68,16 +64,14 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'role'=> $user->role,
             ],
-        ]);
+        ],'Login successful');
     }
     // Logout the authenticated user
     public function logout(Request $request) 
     {
         $user = $request->user();
         $user->currentAccessToken()->delete();
-        return response()->json([
-            'message' => 'Logout successful',
-        ]);
-    
+
+        return $this->success(null, 'Logout successful');
     }
 }

@@ -11,7 +11,7 @@ class AddressController extends Controller
 {
     public function index(Request $request)
     {
-        return AddressResource::collection($request->user()->addresses);
+        return $this->success(AddressResource::collection($request->user()->addresses));
     }
     
     public function store(Request $request)
@@ -25,10 +25,7 @@ class AddressController extends Controller
         ]);
         $address = $request->user()->addresses()->create($validated);
 
-        return response()->json([
-            'message' => 'Address created successfully',
-            'address' => new AddressResource($address),
-        ], 201);
+        return $this->success(new AddressResource($address), 'Address created successfully', 201);
     }
 
     public function update(Request $request, Address $address) {
@@ -44,14 +41,12 @@ class AddressController extends Controller
 
         $address->update($validated);
 
-        return new AddressResource($address);
+        return $this->success(new AddressResource($address), 'Address updated successfully');
     }
     
     public function destroy(Address $address) {
         $this->authorize('delete', $address);
         $address->delete();
-        return response()->json([
-            'message' => 'Address deleted successfully',
-        ], 200);
+        return $this->success(null, 'Address deleted successfully', 204);
     }
 }

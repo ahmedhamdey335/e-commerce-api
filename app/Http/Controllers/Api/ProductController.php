@@ -49,7 +49,7 @@ class ProductController extends Controller
         }
 
         // pagination
-        return ProductResource::collection($query->paginate(10));
+        return $this->success(ProductResource::collection($query->paginate(10)));
     }
 
     // Create products.
@@ -77,13 +77,12 @@ class ProductController extends Controller
         if ($categoryIds) {
             $product->categories()->attach($categoryIds);
         }
-
-        return new ProductResource($product);
+        return $this->success(new ProductResource($product), 'Product created successfully', 201);
     }
 
     // View a single product (public).
     public function show(Product $product){
-        return new ProductResource($product->load('categories'));
+        return $this->success(new ProductResource($product->load('categories')));
     }
 
     // Update product.
@@ -118,7 +117,7 @@ class ProductController extends Controller
         if ($request->has('categories')) {
             $product->categories()->syncWithoutDetaching($categoryIds);
         }
-        return new ProductResource($product);
+        return $this->success(new ProductResource($product), 'Product updated successfully');
     }
 
     // Delete product.
@@ -130,7 +129,7 @@ class ProductController extends Controller
         }
 
         $product->delete();
-        return response()->noContent();
+        return $this->success(null, 'Product deleted successfully', 204);
     }
 
     // Search products
@@ -160,8 +159,6 @@ class ProductController extends Controller
             $productsQuery->where('price', '<=', $request->input('max_price') * 100);
         }
 
-        return ProductResource::collection(
-            $productsQuery->with('categories')->paginate(10)
-        );
+        return $this->success(ProductResource::collection($productsQuery->with('categories')->paginate(10)));
     }
 }
