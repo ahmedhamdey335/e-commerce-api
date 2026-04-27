@@ -36,6 +36,8 @@ All accounts use the password: `password`
 | Seller 2 | seller2@example.com  |
 | Customer | customer@example.com |
 
-## API Testing
+## API Documentation
 
-Import `postman_collection.json` into Postman to explore and test all available endpoints.
+Visit `/docs` to view the interactive API documentation.
+
+Import `postman_collection.json` into Postman to test all endpoints.
