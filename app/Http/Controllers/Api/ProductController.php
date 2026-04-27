@@ -12,9 +12,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @group Products
+ *
+ * Endpoints for browsing and managing products.
+ */
 class ProductController extends Controller
 {
-    // Browse products.
+    /**
+     * List products
+     *
+     * Returns a paginated list of products with filtering and sorting options.
+     *
+     * @unauthenticated
+     */
     public function index(Request $request){
         $query = Product::query();
         $query->with('categories');
@@ -52,7 +63,11 @@ class ProductController extends Controller
         return $this->success(ProductResource::collection($query->paginate(10)));
     }
 
-    // Create products.
+    /**
+     * Create product
+     *
+     * Creates a new product for the authenticated seller or admin. Requires seller or admin role.
+     */
     public function store(StoreProductRequest $request){
         $this->authorize('create', Product::class);
         
@@ -80,12 +95,22 @@ class ProductController extends Controller
         return $this->success(new ProductResource($product), 'Product created successfully', 201);
     }
 
-    // View a single product (public).
+    /**
+     * Show product
+     *
+     * Returns the details of a single product including its categories.
+     *
+     * @unauthenticated
+     */
     public function show(Product $product){
         return $this->success(new ProductResource($product->load('categories')));
     }
 
-    // Update product.
+    /**
+     * Update product
+     *
+     * Updates an existing product owned by the authenticated seller or managed by an admin. Requires seller or admin role.
+     */
     public function update(UpdateProductRequest $request, Product $product){
         $this->authorize('update', $product);
 
@@ -120,7 +145,11 @@ class ProductController extends Controller
         return $this->success(new ProductResource($product), 'Product updated successfully');
     }
 
-    // Delete product.
+    /**
+     * Delete product
+     *
+     * Deletes a product owned by the authenticated seller or managed by an admin. Requires seller or admin role.
+     */
     public function destroy(Product $product){
         $this->authorize('delete', $product);
 
@@ -132,7 +161,13 @@ class ProductController extends Controller
         return $this->success(null, 'Product deleted successfully', 204);
     }
 
-    // Search products
+    /**
+     * Search products
+     *
+     * Searches products by query, category, and price range with pagination.
+     *
+     * @unauthenticated
+     */
     public function search(Request $request) {
         $query = $request->input('q');
         $productsQuery = Product::query();

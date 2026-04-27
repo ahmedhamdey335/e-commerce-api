@@ -1,0 +1,2086 @@
+openapi: 3.0.3
+info:
+  title: 'E-Commerce API'
+  description: 'A full-featured e-commerce REST API built with Laravel 12.'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://e-commerce-api.test'
+tags:
+  -
+    name: Addresses
+    description: "\nEndpoints for managing customer shipping addresses."
+  -
+    name: Auth
+    description: "\nEndpoints for user authentication."
+  -
+    name: Cart
+    description: "\nEndpoints for managing the authenticated customer's shopping cart."
+  -
+    name: Categories
+    description: "\nEndpoints for browsing and managing product categories."
+  -
+    name: Endpoints
+    description: ''
+  -
+    name: Orders
+    description: "\nEndpoints for placing orders and managing order workflows."
+  -
+    name: Products
+    description: "\nEndpoints for browsing and managing products."
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'You can get your token by calling the login endpoint.'
+security:
+  -
+    default: []
+paths:
+  /api/addresses:
+    get:
+      summary: 'List addresses'
+      operationId: listAddresses
+      description: 'Returns all saved addresses for the authenticated customer. Requires customer role.'
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: Unauthenticated
+                  errors: null
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Unauthenticated
+                  errors:
+                    type: string
+                    example: null
+                    nullable: true
+      tags:
+        - Addresses
+    post:
+      summary: 'Create address'
+      operationId: createAddress
+      description: 'Creates a new address for the authenticated customer. Requires customer role.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Addresses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 50 characters.'
+                  example: b
+                address:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: 'n'
+                city:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: g
+                postal_code:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: zmiyvdljnikhwayk
+                  nullable: true
+                country:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: c
+                  nullable: true
+              required:
+                - title
+                - address
+                - city
+  '/api/addresses/{address_id}':
+    put:
+      summary: 'Update address'
+      operationId: updateAddress
+      description: 'Updates an existing address owned by the authenticated customer. Requires customer role.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Addresses
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 50 characters.'
+                  example: b
+                address:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: 'n'
+                city:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: g
+                postal_code:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: zmiyvdljnikhwayk
+                  nullable: true
+                country:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: c
+                  nullable: true
+    delete:
+      summary: 'Delete address'
+      operationId: deleteAddress
+      description: 'Deletes an address owned by the authenticated customer. Requires customer role.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Addresses
+    parameters:
+      -
+        in: path
+        name: address_id
+        description: 'The ID of the address.'
+        example: 2
+        required: true
+        schema:
+          type: integer
+  /api/register:
+    post:
+      summary: Register
+      operationId: register
+      description: 'Creates a new customer account and returns an access token.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: b
+                email:
+                  type: string
+                  description: 'Must be a valid email address. Must not be greater than 255 characters.'
+                  example: zbailey@example.net
+                password:
+                  type: string
+                  description: 'Must be at least 8 characters.'
+                  example: '-0pBNvYgxw'
+              required:
+                - name
+                - email
+                - password
+      security: []
+  /api/login:
+    post:
+      summary: Login
+      operationId: login
+      description: 'Authenticates a user and returns an access token.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: gbailey@example.net
+                password:
+                  type: string
+                  description: ''
+                  example: '|]|{+-'
+              required:
+                - email
+                - password
+      security: []
+  /api/logout:
+    post:
+      summary: Logout
+      operationId: logout
+      description: 'Revokes the current access token.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Auth
+  /api/cart:
+    get:
+      summary: 'List cart items'
+      operationId: listCartItems
+      description: 'Returns all cart items for the authenticated customer. Requires customer role.'
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: Unauthenticated
+                  errors: null
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Unauthenticated
+                  errors:
+                    type: string
+                    example: null
+                    nullable: true
+      tags:
+        - Cart
+    post:
+      summary: 'Add to cart'
+      operationId: addToCart
+      description: "Adds a product to the authenticated customer's cart or increases quantity if it already exists. Requires customer role."
+      parameters: []
+      responses: {  }
+      tags:
+        - Cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the products table.'
+                  example: 16
+                quantity:
+                  type: integer
+                  description: 'Must be at least 1.'
+                  example: 22
+              required:
+                - product_id
+                - quantity
+  '/api/cart/{cartItem_id}':
+    delete:
+      summary: 'Remove cart item'
+      operationId: removeCartItem
+      description: 'Removes a cart item belonging to the authenticated customer. Requires customer role.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Cart
+    parameters:
+      -
+        in: path
+        name: cartItem_id
+        description: 'The ID of the cartItem.'
+        example: 16
+        required: true
+        schema:
+          type: integer
+  /api/categories:
+    get:
+      summary: 'List categories'
+      operationId: listCategories
+      description: 'Returns all available product categories.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: ''
+                  data:
+                    -
+                      id: 1
+                      name: Electronics
+                      slug: electronics
+                      description: null
+                    -
+                      id: 2
+                      name: Apple
+                      slug: apple
+                      description: null
+                    -
+                      id: 3
+                      name: Samsung
+                      slug: samsung
+                      description: null
+                    -
+                      id: 4
+                      name: Dolores
+                      slug: dolores
+                      description: 'Est voluptatem est accusantium ea illum.'
+                    -
+                      id: 5
+                      name: Unde
+                      slug: unde
+                      description: 'Est commodi molestias eos officia.'
+                    -
+                      id: 6
+                      name: Non
+                      slug: non
+                      description: 'Autem provident debitis cupiditate eveniet saepe et dolorem.'
+                    -
+                      id: 7
+                      name: Sint
+                      slug: sint
+                      description: 'Quod quaerat nobis aut eius illum.'
+                    -
+                      id: 8
+                      name: Esse
+                      slug: esse
+                      description: 'Voluptas aliquid sit numquam assumenda.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: ''
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: Electronics
+                        slug: electronics
+                        description: null
+                      -
+                        id: 2
+                        name: Apple
+                        slug: apple
+                        description: null
+                      -
+                        id: 3
+                        name: Samsung
+                        slug: samsung
+                        description: null
+                      -
+                        id: 4
+                        name: Dolores
+                        slug: dolores
+                        description: 'Est voluptatem est accusantium ea illum.'
+                      -
+                        id: 5
+                        name: Unde
+                        slug: unde
+                        description: 'Est commodi molestias eos officia.'
+                      -
+                        id: 6
+                        name: Non
+                        slug: non
+                        description: 'Autem provident debitis cupiditate eveniet saepe et dolorem.'
+                      -
+                        id: 7
+                        name: Sint
+                        slug: sint
+                        description: 'Quod quaerat nobis aut eius illum.'
+                      -
+                        id: 8
+                        name: Esse
+                        slug: esse
+                        description: 'Voluptas aliquid sit numquam assumenda.'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: Electronics
+                        slug:
+                          type: string
+                          example: electronics
+                        description:
+                          type: string
+                          example: null
+                          nullable: true
+      tags:
+        - Categories
+      security: []
+    post:
+      summary: 'Create category'
+      operationId: createCategory
+      description: 'Creates a new product category. Requires admin role.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Categories
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: b
+                description:
+                  type: string
+                  description: ''
+                  example: 'Eius et animi quos velit et.'
+                  nullable: true
+              required:
+                - name
+  '/api/categories/{category_id}':
+    get:
+      summary: 'Show category'
+      operationId: showCategory
+      description: 'Returns a category with its related products.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: ''
+                  data:
+                    id: 1
+                    name: Electronics
+                    slug: electronics
+                    description: null
+                    products:
+                      -
+                        id: 1
+                        name: 'iPhone 17'
+                        slug: iphone-17
+                        description: 'Latest Apple smartphone.'
+                        price: '999.00'
+                        stock: 10
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 2
+                        name: 'Samsung Galaxy S30'
+                        slug: samsung-galaxy-s30
+                        description: 'Latest Samsung smartphone.'
+                        price: '899.00'
+                        stock: 13
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-15T11:24:13.000000Z'
+                        image_url: null
+                      -
+                        id: 9
+                        name: 'nobis illum laboriosam'
+                        slug: nobis-illum-laboriosam
+                        description: 'Vel excepturi velit qui eaque est ut. Velit praesentium consequatur aut voluptatum et nihil quas provident. Nihil nobis molestias sed. Iure sint dolorem molestiae eos autem sit aliquam.'
+                        price: '903.79'
+                        stock: 83
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 11
+                        name: 'quia molestias dolores'
+                        slug: quia-molestias-dolores
+                        description: 'Aut nulla corporis ex omnis enim animi rerum non. Cupiditate mollitia ea illo natus explicabo omnis dicta. Eos nobis sed quisquam et est enim. Ea ratione aut rem itaque voluptate nisi.'
+                        price: '132.41'
+                        stock: 71
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 17
+                        name: 'beatae velit pariatur'
+                        slug: beatae-velit-pariatur
+                        description: ggg
+                        price: '115.38'
+                        stock: 77
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-14T10:35:39.000000Z'
+                        image_url: null
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: ''
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Electronics
+                      slug:
+                        type: string
+                        example: electronics
+                      description:
+                        type: string
+                        example: null
+                        nullable: true
+                      products:
+                        type: array
+                        example:
+                          -
+                            id: 1
+                            name: 'iPhone 17'
+                            slug: iphone-17
+                            description: 'Latest Apple smartphone.'
+                            price: '999.00'
+                            stock: 10
+                            created_at: '2026-04-08T09:28:29.000000Z'
+                            updated_at: '2026-04-08T09:28:29.000000Z'
+                            image_url: null
+                          -
+                            id: 2
+                            name: 'Samsung Galaxy S30'
+                            slug: samsung-galaxy-s30
+                            description: 'Latest Samsung smartphone.'
+                            price: '899.00'
+                            stock: 13
+                            created_at: '2026-04-08T09:28:29.000000Z'
+                            updated_at: '2026-04-15T11:24:13.000000Z'
+                            image_url: null
+                          -
+                            id: 9
+                            name: 'nobis illum laboriosam'
+                            slug: nobis-illum-laboriosam
+                            description: 'Vel excepturi velit qui eaque est ut. Velit praesentium consequatur aut voluptatum et nihil quas provident. Nihil nobis molestias sed. Iure sint dolorem molestiae eos autem sit aliquam.'
+                            price: '903.79'
+                            stock: 83
+                            created_at: '2026-04-08T09:28:29.000000Z'
+                            updated_at: '2026-04-08T09:28:29.000000Z'
+                            image_url: null
+                          -
+                            id: 11
+                            name: 'quia molestias dolores'
+                            slug: quia-molestias-dolores
+                            description: 'Aut nulla corporis ex omnis enim animi rerum non. Cupiditate mollitia ea illo natus explicabo omnis dicta. Eos nobis sed quisquam et est enim. Ea ratione aut rem itaque voluptate nisi.'
+                            price: '132.41'
+                            stock: 71
+                            created_at: '2026-04-08T09:28:29.000000Z'
+                            updated_at: '2026-04-08T09:28:29.000000Z'
+                            image_url: null
+                          -
+                            id: 17
+                            name: 'beatae velit pariatur'
+                            slug: beatae-velit-pariatur
+                            description: ggg
+                            price: '115.38'
+                            stock: 77
+                            created_at: '2026-04-08T09:28:29.000000Z'
+                            updated_at: '2026-04-14T10:35:39.000000Z'
+                            image_url: null
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'iPhone 17'
+                            slug:
+                              type: string
+                              example: iphone-17
+                            description:
+                              type: string
+                              example: 'Latest Apple smartphone.'
+                            price:
+                              type: string
+                              example: '999.00'
+                            stock:
+                              type: integer
+                              example: 10
+                            created_at:
+                              type: string
+                              example: '2026-04-08T09:28:29.000000Z'
+                            updated_at:
+                              type: string
+                              example: '2026-04-08T09:28:29.000000Z'
+                            image_url:
+                              type: string
+                              example: null
+                              nullable: true
+      tags:
+        - Categories
+      security: []
+    put:
+      summary: 'Update category'
+      operationId: updateCategory
+      description: 'Updates an existing product category. Requires admin role.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Categories
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: b
+                description:
+                  type: string
+                  description: ''
+                  example: 'Eius et animi quos velit et.'
+                  nullable: true
+    patch:
+      summary: 'Update category'
+      operationId: updateCategory
+      description: 'Updates an existing product category. Requires admin role.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Categories
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: b
+                description:
+                  type: string
+                  description: ''
+                  example: 'Eius et animi quos velit et.'
+                  nullable: true
+    delete:
+      summary: 'Delete category'
+      operationId: deleteCategory
+      description: 'Deletes a product category. Requires admin role.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Categories
+    parameters:
+      -
+        in: path
+        name: category_id
+        description: 'The ID of the category.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/user:
+    get:
+      summary: ''
+      operationId: getApiUser
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: Unauthenticated
+                  errors: null
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Unauthenticated
+                  errors:
+                    type: string
+                    example: null
+                    nullable: true
+      tags:
+        - Endpoints
+  /api/orders:
+    get:
+      summary: 'List orders'
+      operationId: listOrders
+      description: 'Returns orders for the authenticated user based on role visibility (admin, seller, or customer). Requires authentication.'
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: Unauthenticated
+                  errors: null
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Unauthenticated
+                  errors:
+                    type: string
+                    example: null
+                    nullable: true
+      tags:
+        - Orders
+  '/api/orders/{order_id}':
+    get:
+      summary: 'Show order'
+      operationId: showOrder
+      description: 'Returns details for a specific order if the authenticated user is allowed to view it. Requires authentication.'
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: Unauthenticated
+                  errors: null
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Unauthenticated
+                  errors:
+                    type: string
+                    example: null
+                    nullable: true
+      tags:
+        - Orders
+    parameters:
+      -
+        in: path
+        name: order_id
+        description: 'The ID of the order.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/checkout:
+    post:
+      summary: Checkout
+      operationId: checkout
+      description: "Places a new order from the authenticated customer's cart and selected address. Requires customer role."
+      parameters: []
+      responses: {  }
+      tags:
+        - Orders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                address_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the addresses table.'
+                  example: architecto
+              required:
+                - address_id
+  '/api/orders/{order_id}/status':
+    patch:
+      summary: 'Update order status'
+      operationId: updateOrderStatus
+      description: 'Updates the status of an order. Requires admin role.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Orders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: ''
+                  example: delivered
+                  enum:
+                    - pending
+                    - processing
+                    - shipped
+                    - delivered
+                    - cancelled
+              required:
+                - status
+    parameters:
+      -
+        in: path
+        name: order_id
+        description: 'The ID of the order.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/products:
+    get:
+      summary: 'List products'
+      operationId: listProducts
+      description: 'Returns a paginated list of products with filtering and sorting options.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: ''
+                  data:
+                    -
+                      id: 21
+                      name: 'toy 1'
+                      slug: toy-1
+                      description: gggggggggggggggggg
+                      price: '1,112.00'
+                      stock: 489
+                      categories: []
+                      created_at: '2026-04-13T06:33:31.000000Z'
+                      updated_at: '2026-04-13T06:58:13.000000Z'
+                      image_url: null
+                    -
+                      id: 1
+                      name: 'iPhone 17'
+                      slug: iphone-17
+                      description: 'Latest Apple smartphone.'
+                      price: '999.00'
+                      stock: 10
+                      categories:
+                        -
+                          id: 1
+                          name: Electronics
+                          slug: electronics
+                          description: null
+                        -
+                          id: 2
+                          name: Apple
+                          slug: apple
+                          description: null
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                    -
+                      id: 2
+                      name: 'Samsung Galaxy S30'
+                      slug: samsung-galaxy-s30
+                      description: 'Latest Samsung smartphone.'
+                      price: '899.00'
+                      stock: 13
+                      categories:
+                        -
+                          id: 1
+                          name: Electronics
+                          slug: electronics
+                          description: null
+                        -
+                          id: 3
+                          name: Samsung
+                          slug: samsung
+                          description: null
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-15T11:24:13.000000Z'
+                      image_url: null
+                    -
+                      id: 3
+                      name: 'dolor repellat laborum'
+                      slug: dolor-repellat-laborum
+                      description: 'Perferendis rem eaque et saepe est. Libero enim neque et excepturi. Beatae voluptatem sunt dolor nam quo nostrum.'
+                      price: '823.01'
+                      stock: 47
+                      categories:
+                        -
+                          id: 5
+                          name: Unde
+                          slug: unde
+                          description: 'Est commodi molestias eos officia.'
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                    -
+                      id: 4
+                      name: 'neque architecto quas'
+                      slug: neque-architecto-quas
+                      description: 'Consequatur illo laudantium qui dolore quisquam aut. Quas laboriosam repellat quasi quae quam quia unde. Eos voluptatem est quisquam aliquid facilis. Ut reiciendis omnis animi commodi.'
+                      price: '980.38'
+                      stock: 95
+                      categories:
+                        -
+                          id: 5
+                          name: Unde
+                          slug: unde
+                          description: 'Est commodi molestias eos officia.'
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                    -
+                      id: 5
+                      name: 'dolorem voluptatum aperiam'
+                      slug: dolorem-voluptatum-aperiam
+                      description: 'Velit earum modi deleniti ducimus. Similique facere ut voluptas laboriosam qui placeat. Perspiciatis dolor cupiditate voluptatem inventore excepturi.'
+                      price: '781.74'
+                      stock: 1
+                      categories:
+                        -
+                          id: 2
+                          name: Apple
+                          slug: apple
+                          description: null
+                        -
+                          id: 7
+                          name: Sint
+                          slug: sint
+                          description: 'Quod quaerat nobis aut eius illum.'
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                    -
+                      id: 6
+                      name: 'praesentium et voluptates'
+                      slug: praesentium-et-voluptates
+                      description: 'Laudantium ab consectetur sunt. Magnam aut minus consequatur quibusdam praesentium.'
+                      price: '295.11'
+                      stock: 23
+                      categories:
+                        -
+                          id: 3
+                          name: Samsung
+                          slug: samsung
+                          description: null
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                    -
+                      id: 7
+                      name: 'dolor perferendis omnis'
+                      slug: dolor-perferendis-omnis
+                      description: 'Consequatur iure expedita odio. Sed vitae ipsum consequatur blanditiis. Similique corporis aut cupiditate rerum occaecati vel ab magnam.'
+                      price: '519.24'
+                      stock: 88
+                      categories:
+                        -
+                          id: 3
+                          name: Samsung
+                          slug: samsung
+                          description: null
+                        -
+                          id: 5
+                          name: Unde
+                          slug: unde
+                          description: 'Est commodi molestias eos officia.'
+                        -
+                          id: 8
+                          name: Esse
+                          slug: esse
+                          description: 'Voluptas aliquid sit numquam assumenda.'
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                    -
+                      id: 8
+                      name: 'ratione a qui'
+                      slug: ratione-a-qui
+                      description: 'Ea minus quis id. Voluptas illo porro omnis. Saepe quasi doloribus illum ut iusto et sed. Quisquam eligendi omnis beatae eum illum necessitatibus voluptatem.'
+                      price: '345.29'
+                      stock: 72
+                      categories:
+                        -
+                          id: 2
+                          name: Apple
+                          slug: apple
+                          description: null
+                        -
+                          id: 7
+                          name: Sint
+                          slug: sint
+                          description: 'Quod quaerat nobis aut eius illum.'
+                        -
+                          id: 8
+                          name: Esse
+                          slug: esse
+                          description: 'Voluptas aliquid sit numquam assumenda.'
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                    -
+                      id: 9
+                      name: 'nobis illum laboriosam'
+                      slug: nobis-illum-laboriosam
+                      description: 'Vel excepturi velit qui eaque est ut. Velit praesentium consequatur aut voluptatum et nihil quas provident. Nihil nobis molestias sed. Iure sint dolorem molestiae eos autem sit aliquam.'
+                      price: '903.79'
+                      stock: 83
+                      categories:
+                        -
+                          id: 1
+                          name: Electronics
+                          slug: electronics
+                          description: null
+                        -
+                          id: 6
+                          name: Non
+                          slug: non
+                          description: 'Autem provident debitis cupiditate eveniet saepe et dolorem.'
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: ''
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 21
+                        name: 'toy 1'
+                        slug: toy-1
+                        description: gggggggggggggggggg
+                        price: '1,112.00'
+                        stock: 489
+                        categories: []
+                        created_at: '2026-04-13T06:33:31.000000Z'
+                        updated_at: '2026-04-13T06:58:13.000000Z'
+                        image_url: null
+                      -
+                        id: 1
+                        name: 'iPhone 17'
+                        slug: iphone-17
+                        description: 'Latest Apple smartphone.'
+                        price: '999.00'
+                        stock: 10
+                        categories:
+                          -
+                            id: 1
+                            name: Electronics
+                            slug: electronics
+                            description: null
+                          -
+                            id: 2
+                            name: Apple
+                            slug: apple
+                            description: null
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 2
+                        name: 'Samsung Galaxy S30'
+                        slug: samsung-galaxy-s30
+                        description: 'Latest Samsung smartphone.'
+                        price: '899.00'
+                        stock: 13
+                        categories:
+                          -
+                            id: 1
+                            name: Electronics
+                            slug: electronics
+                            description: null
+                          -
+                            id: 3
+                            name: Samsung
+                            slug: samsung
+                            description: null
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-15T11:24:13.000000Z'
+                        image_url: null
+                      -
+                        id: 3
+                        name: 'dolor repellat laborum'
+                        slug: dolor-repellat-laborum
+                        description: 'Perferendis rem eaque et saepe est. Libero enim neque et excepturi. Beatae voluptatem sunt dolor nam quo nostrum.'
+                        price: '823.01'
+                        stock: 47
+                        categories:
+                          -
+                            id: 5
+                            name: Unde
+                            slug: unde
+                            description: 'Est commodi molestias eos officia.'
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 4
+                        name: 'neque architecto quas'
+                        slug: neque-architecto-quas
+                        description: 'Consequatur illo laudantium qui dolore quisquam aut. Quas laboriosam repellat quasi quae quam quia unde. Eos voluptatem est quisquam aliquid facilis. Ut reiciendis omnis animi commodi.'
+                        price: '980.38'
+                        stock: 95
+                        categories:
+                          -
+                            id: 5
+                            name: Unde
+                            slug: unde
+                            description: 'Est commodi molestias eos officia.'
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 5
+                        name: 'dolorem voluptatum aperiam'
+                        slug: dolorem-voluptatum-aperiam
+                        description: 'Velit earum modi deleniti ducimus. Similique facere ut voluptas laboriosam qui placeat. Perspiciatis dolor cupiditate voluptatem inventore excepturi.'
+                        price: '781.74'
+                        stock: 1
+                        categories:
+                          -
+                            id: 2
+                            name: Apple
+                            slug: apple
+                            description: null
+                          -
+                            id: 7
+                            name: Sint
+                            slug: sint
+                            description: 'Quod quaerat nobis aut eius illum.'
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 6
+                        name: 'praesentium et voluptates'
+                        slug: praesentium-et-voluptates
+                        description: 'Laudantium ab consectetur sunt. Magnam aut minus consequatur quibusdam praesentium.'
+                        price: '295.11'
+                        stock: 23
+                        categories:
+                          -
+                            id: 3
+                            name: Samsung
+                            slug: samsung
+                            description: null
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 7
+                        name: 'dolor perferendis omnis'
+                        slug: dolor-perferendis-omnis
+                        description: 'Consequatur iure expedita odio. Sed vitae ipsum consequatur blanditiis. Similique corporis aut cupiditate rerum occaecati vel ab magnam.'
+                        price: '519.24'
+                        stock: 88
+                        categories:
+                          -
+                            id: 3
+                            name: Samsung
+                            slug: samsung
+                            description: null
+                          -
+                            id: 5
+                            name: Unde
+                            slug: unde
+                            description: 'Est commodi molestias eos officia.'
+                          -
+                            id: 8
+                            name: Esse
+                            slug: esse
+                            description: 'Voluptas aliquid sit numquam assumenda.'
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 8
+                        name: 'ratione a qui'
+                        slug: ratione-a-qui
+                        description: 'Ea minus quis id. Voluptas illo porro omnis. Saepe quasi doloribus illum ut iusto et sed. Quisquam eligendi omnis beatae eum illum necessitatibus voluptatem.'
+                        price: '345.29'
+                        stock: 72
+                        categories:
+                          -
+                            id: 2
+                            name: Apple
+                            slug: apple
+                            description: null
+                          -
+                            id: 7
+                            name: Sint
+                            slug: sint
+                            description: 'Quod quaerat nobis aut eius illum.'
+                          -
+                            id: 8
+                            name: Esse
+                            slug: esse
+                            description: 'Voluptas aliquid sit numquam assumenda.'
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 9
+                        name: 'nobis illum laboriosam'
+                        slug: nobis-illum-laboriosam
+                        description: 'Vel excepturi velit qui eaque est ut. Velit praesentium consequatur aut voluptatum et nihil quas provident. Nihil nobis molestias sed. Iure sint dolorem molestiae eos autem sit aliquam.'
+                        price: '903.79'
+                        stock: 83
+                        categories:
+                          -
+                            id: 1
+                            name: Electronics
+                            slug: electronics
+                            description: null
+                          -
+                            id: 6
+                            name: Non
+                            slug: non
+                            description: 'Autem provident debitis cupiditate eveniet saepe et dolorem.'
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 21
+                        name:
+                          type: string
+                          example: 'toy 1'
+                        slug:
+                          type: string
+                          example: toy-1
+                        description:
+                          type: string
+                          example: gggggggggggggggggg
+                        price:
+                          type: string
+                          example: '1,112.00'
+                        stock:
+                          type: integer
+                          example: 489
+                        categories:
+                          type: array
+                          example: []
+                        created_at:
+                          type: string
+                          example: '2026-04-13T06:33:31.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2026-04-13T06:58:13.000000Z'
+                        image_url:
+                          type: string
+                          example: null
+                          nullable: true
+      tags:
+        - Products
+      security: []
+    post:
+      summary: 'Create product'
+      operationId: createProduct
+      description: 'Creates a new product for the authenticated seller or admin. Requires seller or admin role.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: b
+                description:
+                  type: string
+                  description: ''
+                  example: 'Eius et animi quos velit et.'
+                  nullable: true
+                price:
+                  type: number
+                  description: 'Must be at least 0.'
+                  example: 60
+                stock:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  example: 42
+                categories:
+                  type: array
+                  description: 'The <code>id</code> of an existing record in the categories table.'
+                  example:
+                    - 16
+                  items:
+                    type: integer
+                image:
+                  type: string
+                  format: binary
+                  description: 'Must be an image. Must not be greater than 2048 kilobytes.'
+                  nullable: true
+              required:
+                - name
+                - price
+                - stock
+                - categories
+  '/api/products/{product_id}':
+    get:
+      summary: 'Show product'
+      operationId: showProduct
+      description: 'Returns the details of a single product including its categories.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: ''
+                  data:
+                    id: 1
+                    name: 'iPhone 17'
+                    slug: iphone-17
+                    description: 'Latest Apple smartphone.'
+                    price: '999.00'
+                    stock: 10
+                    categories:
+                      -
+                        id: 1
+                        name: Electronics
+                        slug: electronics
+                        description: null
+                      -
+                        id: 2
+                        name: Apple
+                        slug: apple
+                        description: null
+                    created_at: '2026-04-08T09:28:29.000000Z'
+                    updated_at: '2026-04-08T09:28:29.000000Z'
+                    image_url: null
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: ''
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'iPhone 17'
+                      slug:
+                        type: string
+                        example: iphone-17
+                      description:
+                        type: string
+                        example: 'Latest Apple smartphone.'
+                      price:
+                        type: string
+                        example: '999.00'
+                      stock:
+                        type: integer
+                        example: 10
+                      categories:
+                        type: array
+                        example:
+                          -
+                            id: 1
+                            name: Electronics
+                            slug: electronics
+                            description: null
+                          -
+                            id: 2
+                            name: Apple
+                            slug: apple
+                            description: null
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: Electronics
+                            slug:
+                              type: string
+                              example: electronics
+                            description:
+                              type: string
+                              example: null
+                              nullable: true
+                      created_at:
+                        type: string
+                        example: '2026-04-08T09:28:29.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2026-04-08T09:28:29.000000Z'
+                      image_url:
+                        type: string
+                        example: null
+                        nullable: true
+      tags:
+        - Products
+      security: []
+    put:
+      summary: 'Update product'
+      operationId: updateProduct
+      description: 'Updates an existing product owned by the authenticated seller or managed by an admin. Requires seller or admin role.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: b
+                description:
+                  type: string
+                  description: ''
+                  example: 'Eius et animi quos velit et.'
+                  nullable: true
+                price:
+                  type: number
+                  description: 'Must be at least 0.'
+                  example: 60
+                stock:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  example: 42
+                categories:
+                  type: array
+                  description: 'The <code>id</code> of an existing record in the categories table.'
+                  example:
+                    - 16
+                  items:
+                    type: integer
+                image:
+                  type: string
+                  format: binary
+                  description: 'Must be an image. Must not be greater than 2048 kilobytes.'
+                  nullable: true
+              required:
+                - categories
+    patch:
+      summary: 'Update product'
+      operationId: updateProduct
+      description: 'Updates an existing product owned by the authenticated seller or managed by an admin. Requires seller or admin role.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: b
+                description:
+                  type: string
+                  description: ''
+                  example: 'Eius et animi quos velit et.'
+                  nullable: true
+                price:
+                  type: number
+                  description: 'Must be at least 0.'
+                  example: 60
+                stock:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  example: 42
+                categories:
+                  type: array
+                  description: 'The <code>id</code> of an existing record in the categories table.'
+                  example:
+                    - 16
+                  items:
+                    type: integer
+                image:
+                  type: string
+                  format: binary
+                  description: 'Must be an image. Must not be greater than 2048 kilobytes.'
+                  nullable: true
+              required:
+                - categories
+    delete:
+      summary: 'Delete product'
+      operationId: deleteProduct
+      description: 'Deletes a product owned by the authenticated seller or managed by an admin. Requires seller or admin role.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Products
+    parameters:
+      -
+        in: path
+        name: product_id
+        description: 'The ID of the product.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/search:
+    get:
+      summary: 'Search products'
+      operationId: searchProducts
+      description: 'Searches products by query, category, and price range with pagination.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: ''
+                  data:
+                    -
+                      id: 1
+                      name: 'iPhone 17'
+                      slug: iphone-17
+                      description: 'Latest Apple smartphone.'
+                      price: '999.00'
+                      stock: 10
+                      categories:
+                        -
+                          id: 1
+                          name: Electronics
+                          slug: electronics
+                          description: null
+                        -
+                          id: 2
+                          name: Apple
+                          slug: apple
+                          description: null
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                    -
+                      id: 2
+                      name: 'Samsung Galaxy S30'
+                      slug: samsung-galaxy-s30
+                      description: 'Latest Samsung smartphone.'
+                      price: '899.00'
+                      stock: 13
+                      categories:
+                        -
+                          id: 1
+                          name: Electronics
+                          slug: electronics
+                          description: null
+                        -
+                          id: 3
+                          name: Samsung
+                          slug: samsung
+                          description: null
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-15T11:24:13.000000Z'
+                      image_url: null
+                    -
+                      id: 3
+                      name: 'dolor repellat laborum'
+                      slug: dolor-repellat-laborum
+                      description: 'Perferendis rem eaque et saepe est. Libero enim neque et excepturi. Beatae voluptatem sunt dolor nam quo nostrum.'
+                      price: '823.01'
+                      stock: 47
+                      categories:
+                        -
+                          id: 5
+                          name: Unde
+                          slug: unde
+                          description: 'Est commodi molestias eos officia.'
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                    -
+                      id: 4
+                      name: 'neque architecto quas'
+                      slug: neque-architecto-quas
+                      description: 'Consequatur illo laudantium qui dolore quisquam aut. Quas laboriosam repellat quasi quae quam quia unde. Eos voluptatem est quisquam aliquid facilis. Ut reiciendis omnis animi commodi.'
+                      price: '980.38'
+                      stock: 95
+                      categories:
+                        -
+                          id: 5
+                          name: Unde
+                          slug: unde
+                          description: 'Est commodi molestias eos officia.'
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                    -
+                      id: 5
+                      name: 'dolorem voluptatum aperiam'
+                      slug: dolorem-voluptatum-aperiam
+                      description: 'Velit earum modi deleniti ducimus. Similique facere ut voluptas laboriosam qui placeat. Perspiciatis dolor cupiditate voluptatem inventore excepturi.'
+                      price: '781.74'
+                      stock: 1
+                      categories:
+                        -
+                          id: 2
+                          name: Apple
+                          slug: apple
+                          description: null
+                        -
+                          id: 7
+                          name: Sint
+                          slug: sint
+                          description: 'Quod quaerat nobis aut eius illum.'
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                    -
+                      id: 6
+                      name: 'praesentium et voluptates'
+                      slug: praesentium-et-voluptates
+                      description: 'Laudantium ab consectetur sunt. Magnam aut minus consequatur quibusdam praesentium.'
+                      price: '295.11'
+                      stock: 23
+                      categories:
+                        -
+                          id: 3
+                          name: Samsung
+                          slug: samsung
+                          description: null
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                    -
+                      id: 7
+                      name: 'dolor perferendis omnis'
+                      slug: dolor-perferendis-omnis
+                      description: 'Consequatur iure expedita odio. Sed vitae ipsum consequatur blanditiis. Similique corporis aut cupiditate rerum occaecati vel ab magnam.'
+                      price: '519.24'
+                      stock: 88
+                      categories:
+                        -
+                          id: 3
+                          name: Samsung
+                          slug: samsung
+                          description: null
+                        -
+                          id: 5
+                          name: Unde
+                          slug: unde
+                          description: 'Est commodi molestias eos officia.'
+                        -
+                          id: 8
+                          name: Esse
+                          slug: esse
+                          description: 'Voluptas aliquid sit numquam assumenda.'
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                    -
+                      id: 8
+                      name: 'ratione a qui'
+                      slug: ratione-a-qui
+                      description: 'Ea minus quis id. Voluptas illo porro omnis. Saepe quasi doloribus illum ut iusto et sed. Quisquam eligendi omnis beatae eum illum necessitatibus voluptatem.'
+                      price: '345.29'
+                      stock: 72
+                      categories:
+                        -
+                          id: 2
+                          name: Apple
+                          slug: apple
+                          description: null
+                        -
+                          id: 7
+                          name: Sint
+                          slug: sint
+                          description: 'Quod quaerat nobis aut eius illum.'
+                        -
+                          id: 8
+                          name: Esse
+                          slug: esse
+                          description: 'Voluptas aliquid sit numquam assumenda.'
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                    -
+                      id: 9
+                      name: 'nobis illum laboriosam'
+                      slug: nobis-illum-laboriosam
+                      description: 'Vel excepturi velit qui eaque est ut. Velit praesentium consequatur aut voluptatum et nihil quas provident. Nihil nobis molestias sed. Iure sint dolorem molestiae eos autem sit aliquam.'
+                      price: '903.79'
+                      stock: 83
+                      categories:
+                        -
+                          id: 1
+                          name: Electronics
+                          slug: electronics
+                          description: null
+                        -
+                          id: 6
+                          name: Non
+                          slug: non
+                          description: 'Autem provident debitis cupiditate eveniet saepe et dolorem.'
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                    -
+                      id: 10
+                      name: 'omnis porro quisquam'
+                      slug: omnis-porro-quisquam
+                      description: 'Eaque ab culpa ut maxime aut cupiditate et. Dolores unde ut nisi repellat laborum quisquam.'
+                      price: '364.32'
+                      stock: 47
+                      categories:
+                        -
+                          id: 2
+                          name: Apple
+                          slug: apple
+                          description: null
+                        -
+                          id: 7
+                          name: Sint
+                          slug: sint
+                          description: 'Quod quaerat nobis aut eius illum.'
+                      created_at: '2026-04-08T09:28:29.000000Z'
+                      updated_at: '2026-04-08T09:28:29.000000Z'
+                      image_url: null
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: ''
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'iPhone 17'
+                        slug: iphone-17
+                        description: 'Latest Apple smartphone.'
+                        price: '999.00'
+                        stock: 10
+                        categories:
+                          -
+                            id: 1
+                            name: Electronics
+                            slug: electronics
+                            description: null
+                          -
+                            id: 2
+                            name: Apple
+                            slug: apple
+                            description: null
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 2
+                        name: 'Samsung Galaxy S30'
+                        slug: samsung-galaxy-s30
+                        description: 'Latest Samsung smartphone.'
+                        price: '899.00'
+                        stock: 13
+                        categories:
+                          -
+                            id: 1
+                            name: Electronics
+                            slug: electronics
+                            description: null
+                          -
+                            id: 3
+                            name: Samsung
+                            slug: samsung
+                            description: null
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-15T11:24:13.000000Z'
+                        image_url: null
+                      -
+                        id: 3
+                        name: 'dolor repellat laborum'
+                        slug: dolor-repellat-laborum
+                        description: 'Perferendis rem eaque et saepe est. Libero enim neque et excepturi. Beatae voluptatem sunt dolor nam quo nostrum.'
+                        price: '823.01'
+                        stock: 47
+                        categories:
+                          -
+                            id: 5
+                            name: Unde
+                            slug: unde
+                            description: 'Est commodi molestias eos officia.'
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 4
+                        name: 'neque architecto quas'
+                        slug: neque-architecto-quas
+                        description: 'Consequatur illo laudantium qui dolore quisquam aut. Quas laboriosam repellat quasi quae quam quia unde. Eos voluptatem est quisquam aliquid facilis. Ut reiciendis omnis animi commodi.'
+                        price: '980.38'
+                        stock: 95
+                        categories:
+                          -
+                            id: 5
+                            name: Unde
+                            slug: unde
+                            description: 'Est commodi molestias eos officia.'
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 5
+                        name: 'dolorem voluptatum aperiam'
+                        slug: dolorem-voluptatum-aperiam
+                        description: 'Velit earum modi deleniti ducimus. Similique facere ut voluptas laboriosam qui placeat. Perspiciatis dolor cupiditate voluptatem inventore excepturi.'
+                        price: '781.74'
+                        stock: 1
+                        categories:
+                          -
+                            id: 2
+                            name: Apple
+                            slug: apple
+                            description: null
+                          -
+                            id: 7
+                            name: Sint
+                            slug: sint
+                            description: 'Quod quaerat nobis aut eius illum.'
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 6
+                        name: 'praesentium et voluptates'
+                        slug: praesentium-et-voluptates
+                        description: 'Laudantium ab consectetur sunt. Magnam aut minus consequatur quibusdam praesentium.'
+                        price: '295.11'
+                        stock: 23
+                        categories:
+                          -
+                            id: 3
+                            name: Samsung
+                            slug: samsung
+                            description: null
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 7
+                        name: 'dolor perferendis omnis'
+                        slug: dolor-perferendis-omnis
+                        description: 'Consequatur iure expedita odio. Sed vitae ipsum consequatur blanditiis. Similique corporis aut cupiditate rerum occaecati vel ab magnam.'
+                        price: '519.24'
+                        stock: 88
+                        categories:
+                          -
+                            id: 3
+                            name: Samsung
+                            slug: samsung
+                            description: null
+                          -
+                            id: 5
+                            name: Unde
+                            slug: unde
+                            description: 'Est commodi molestias eos officia.'
+                          -
+                            id: 8
+                            name: Esse
+                            slug: esse
+                            description: 'Voluptas aliquid sit numquam assumenda.'
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 8
+                        name: 'ratione a qui'
+                        slug: ratione-a-qui
+                        description: 'Ea minus quis id. Voluptas illo porro omnis. Saepe quasi doloribus illum ut iusto et sed. Quisquam eligendi omnis beatae eum illum necessitatibus voluptatem.'
+                        price: '345.29'
+                        stock: 72
+                        categories:
+                          -
+                            id: 2
+                            name: Apple
+                            slug: apple
+                            description: null
+                          -
+                            id: 7
+                            name: Sint
+                            slug: sint
+                            description: 'Quod quaerat nobis aut eius illum.'
+                          -
+                            id: 8
+                            name: Esse
+                            slug: esse
+                            description: 'Voluptas aliquid sit numquam assumenda.'
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 9
+                        name: 'nobis illum laboriosam'
+                        slug: nobis-illum-laboriosam
+                        description: 'Vel excepturi velit qui eaque est ut. Velit praesentium consequatur aut voluptatum et nihil quas provident. Nihil nobis molestias sed. Iure sint dolorem molestiae eos autem sit aliquam.'
+                        price: '903.79'
+                        stock: 83
+                        categories:
+                          -
+                            id: 1
+                            name: Electronics
+                            slug: electronics
+                            description: null
+                          -
+                            id: 6
+                            name: Non
+                            slug: non
+                            description: 'Autem provident debitis cupiditate eveniet saepe et dolorem.'
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                      -
+                        id: 10
+                        name: 'omnis porro quisquam'
+                        slug: omnis-porro-quisquam
+                        description: 'Eaque ab culpa ut maxime aut cupiditate et. Dolores unde ut nisi repellat laborum quisquam.'
+                        price: '364.32'
+                        stock: 47
+                        categories:
+                          -
+                            id: 2
+                            name: Apple
+                            slug: apple
+                            description: null
+                          -
+                            id: 7
+                            name: Sint
+                            slug: sint
+                            description: 'Quod quaerat nobis aut eius illum.'
+                        created_at: '2026-04-08T09:28:29.000000Z'
+                        updated_at: '2026-04-08T09:28:29.000000Z'
+                        image_url: null
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'iPhone 17'
+                        slug:
+                          type: string
+                          example: iphone-17
+                        description:
+                          type: string
+                          example: 'Latest Apple smartphone.'
+                        price:
+                          type: string
+                          example: '999.00'
+                        stock:
+                          type: integer
+                          example: 10
+                        categories:
+                          type: array
+                          example:
+                            -
+                              id: 1
+                              name: Electronics
+                              slug: electronics
+                              description: null
+                            -
+                              id: 2
+                              name: Apple
+                              slug: apple
+                              description: null
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 1
+                              name:
+                                type: string
+                                example: Electronics
+                              slug:
+                                type: string
+                                example: electronics
+                              description:
+                                type: string
+                                example: null
+                                nullable: true
+                        created_at:
+                          type: string
+                          example: '2026-04-08T09:28:29.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2026-04-08T09:28:29.000000Z'
+                        image_url:
+                          type: string
+                          example: null
+                          nullable: true
+      tags:
+        - Products
+      security: []

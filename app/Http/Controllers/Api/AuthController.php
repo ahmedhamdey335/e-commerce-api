@@ -8,9 +8,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @group Auth
+ * 
+ * Endpoints for user authentication.
+ */
 class AuthController extends Controller
 {
-    // Register a new user
+    /**
+     * Register
+     * 
+     * Creates a new customer account and returns an access token.
+     * 
+     * @unauthenticated
+     */
     public function register(Request $request){
         $request->validate([
             'name' => 'required|string|max:255',
@@ -39,7 +50,14 @@ class AuthController extends Controller
             ],'Registration successful',201);
 
     }
-    // Login an existing user
+
+    /**
+     * Login
+     * 
+     * Authenticates a user and returns an access token.
+     * 
+     * @unauthenticated
+     */
     public function login(Request $request)
     {
         $request->validate([
@@ -66,7 +84,12 @@ class AuthController extends Controller
             ],
         ],'Login successful');
     }
-    // Logout the authenticated user
+
+    /**
+     * Logout
+     * 
+     * Revokes the current access token.
+     */
     public function logout(Request $request) 
     {
         $user = $request->user();

@@ -1,0 +1,1252 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "http:\/\/e-commerce-api.test"
+        }
+    ],
+    "info": {
+        "name": "E-Commerce API",
+        "_postman_id": "10c10fb7-06ab-4980-bce8-67f21fffc1db",
+        "description": "A full-featured e-commerce REST API built with Laravel 12.",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Addresses",
+            "description": "\nEndpoints for managing customer shipping addresses.",
+            "item": [
+                {
+                    "name": "List addresses",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/addresses",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/addresses"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns all saved addresses for the authenticated customer. Requires customer role."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"status\":\"error\",\"message\":\"Unauthenticated\",\"errors\":null}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create address",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/addresses",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/addresses"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\":\"b\",\"address\":\"n\",\"city\":\"g\",\"postal_code\":\"zmiyvdljnikhwayk\",\"country\":\"c\"}"
+                        },
+                        "description": "Creates a new address for the authenticated customer. Requires customer role."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update address",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/addresses\/:address_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/addresses\/:address_id",
+                            "variable": [
+                                {
+                                    "id": "address_id",
+                                    "key": "address_id",
+                                    "value": "2",
+                                    "description": "The ID of the address."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\":\"b\",\"address\":\"n\",\"city\":\"g\",\"postal_code\":\"zmiyvdljnikhwayk\",\"country\":\"c\"}"
+                        },
+                        "description": "Updates an existing address owned by the authenticated customer. Requires customer role."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete address",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/addresses\/:address_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/addresses\/:address_id",
+                            "variable": [
+                                {
+                                    "id": "address_id",
+                                    "key": "address_id",
+                                    "value": "2",
+                                    "description": "The ID of the address."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Deletes an address owned by the authenticated customer. Requires customer role."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Auth",
+            "description": "\nEndpoints for user authentication.",
+            "item": [
+                {
+                    "name": "Register",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/register",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/register"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"b\",\"email\":\"zbailey@example.net\",\"password\":\"-0pBNvYgxw\"}"
+                        },
+                        "description": "Creates a new customer account and returns an access token.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/login",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/login"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"gbailey@example.net\",\"password\":\"|]|{+-\"}"
+                        },
+                        "description": "Authenticates a user and returns an access token.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/logout",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/logout"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Revokes the current access token."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Cart",
+            "description": "\nEndpoints for managing the authenticated customer's shopping cart.",
+            "item": [
+                {
+                    "name": "List cart items",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/cart",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/cart"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns all cart items for the authenticated customer. Requires customer role."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"status\":\"error\",\"message\":\"Unauthenticated\",\"errors\":null}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Add to cart",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/cart",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/cart"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"product_id\":16,\"quantity\":22}"
+                        },
+                        "description": "Adds a product to the authenticated customer's cart or increases quantity if it already exists. Requires customer role."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Remove cart item",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/cart\/:cartItem_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/cart\/:cartItem_id",
+                            "variable": [
+                                {
+                                    "id": "cartItem_id",
+                                    "key": "cartItem_id",
+                                    "value": "16",
+                                    "description": "The ID of the cartItem."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Removes a cart item belonging to the authenticated customer. Requires customer role."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Categories",
+            "description": "\nEndpoints for browsing and managing product categories.",
+            "item": [
+                {
+                    "name": "List categories",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/categories",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/categories"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns all available product categories.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"status\":\"success\",\"message\":\"\",\"data\":[{\"id\":1,\"name\":\"Electronics\",\"slug\":\"electronics\",\"description\":null},{\"id\":2,\"name\":\"Apple\",\"slug\":\"apple\",\"description\":null},{\"id\":3,\"name\":\"Samsung\",\"slug\":\"samsung\",\"description\":null},{\"id\":4,\"name\":\"Dolores\",\"slug\":\"dolores\",\"description\":\"Est voluptatem est accusantium ea illum.\"},{\"id\":5,\"name\":\"Unde\",\"slug\":\"unde\",\"description\":\"Est commodi molestias eos officia.\"},{\"id\":6,\"name\":\"Non\",\"slug\":\"non\",\"description\":\"Autem provident debitis cupiditate eveniet saepe et dolorem.\"},{\"id\":7,\"name\":\"Sint\",\"slug\":\"sint\",\"description\":\"Quod quaerat nobis aut eius illum.\"},{\"id\":8,\"name\":\"Esse\",\"slug\":\"esse\",\"description\":\"Voluptas aliquid sit numquam assumenda.\"}]}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Show category",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/categories\/:category_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/categories\/:category_id",
+                            "variable": [
+                                {
+                                    "id": "category_id",
+                                    "key": "category_id",
+                                    "value": "1",
+                                    "description": "The ID of the category."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a category with its related products.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"status\":\"success\",\"message\":\"\",\"data\":{\"id\":1,\"name\":\"Electronics\",\"slug\":\"electronics\",\"description\":null,\"products\":[{\"id\":1,\"name\":\"iPhone 17\",\"slug\":\"iphone-17\",\"description\":\"Latest Apple smartphone.\",\"price\":\"999.00\",\"stock\":10,\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":2,\"name\":\"Samsung Galaxy S30\",\"slug\":\"samsung-galaxy-s30\",\"description\":\"Latest Samsung smartphone.\",\"price\":\"899.00\",\"stock\":13,\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-15T11:24:13.000000Z\",\"image_url\":null},{\"id\":9,\"name\":\"nobis illum laboriosam\",\"slug\":\"nobis-illum-laboriosam\",\"description\":\"Vel excepturi velit qui eaque est ut. Velit praesentium consequatur aut voluptatum et nihil quas provident. Nihil nobis molestias sed. Iure sint dolorem molestiae eos autem sit aliquam.\",\"price\":\"903.79\",\"stock\":83,\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":11,\"name\":\"quia molestias dolores\",\"slug\":\"quia-molestias-dolores\",\"description\":\"Aut nulla corporis ex omnis enim animi rerum non. Cupiditate mollitia ea illo natus explicabo omnis dicta. Eos nobis sed quisquam et est enim. Ea ratione aut rem itaque voluptate nisi.\",\"price\":\"132.41\",\"stock\":71,\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":17,\"name\":\"beatae velit pariatur\",\"slug\":\"beatae-velit-pariatur\",\"description\":\"ggg\",\"price\":\"115.38\",\"stock\":77,\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-14T10:35:39.000000Z\",\"image_url\":null}]}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create category",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/categories",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/categories"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"b\",\"description\":\"Eius et animi quos velit et.\"}"
+                        },
+                        "description": "Creates a new product category. Requires admin role."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update category",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/categories\/:category_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/categories\/:category_id",
+                            "variable": [
+                                {
+                                    "id": "category_id",
+                                    "key": "category_id",
+                                    "value": "1",
+                                    "description": "The ID of the category."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"b\",\"description\":\"Eius et animi quos velit et.\"}"
+                        },
+                        "description": "Updates an existing product category. Requires admin role."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update category",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/categories\/:category_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/categories\/:category_id",
+                            "variable": [
+                                {
+                                    "id": "category_id",
+                                    "key": "category_id",
+                                    "value": "1",
+                                    "description": "The ID of the category."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"b\",\"description\":\"Eius et animi quos velit et.\"}"
+                        },
+                        "description": "Updates an existing product category. Requires admin role."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete category",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/categories\/:category_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/categories\/:category_id",
+                            "variable": [
+                                {
+                                    "id": "category_id",
+                                    "key": "category_id",
+                                    "value": "1",
+                                    "description": "The ID of the category."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Deletes a product category. Requires admin role."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Endpoints",
+            "description": "",
+            "item": [
+                {
+                    "name": "GET api\/user",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/user",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/user"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"status\":\"error\",\"message\":\"Unauthenticated\",\"errors\":null}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Orders",
+            "description": "\nEndpoints for placing orders and managing order workflows.",
+            "item": [
+                {
+                    "name": "List orders",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/orders",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/orders"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns orders for the authenticated user based on role visibility (admin, seller, or customer). Requires authentication."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"status\":\"error\",\"message\":\"Unauthenticated\",\"errors\":null}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Show order",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/orders\/:order_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/orders\/:order_id",
+                            "variable": [
+                                {
+                                    "id": "order_id",
+                                    "key": "order_id",
+                                    "value": "1",
+                                    "description": "The ID of the order."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns details for a specific order if the authenticated user is allowed to view it. Requires authentication."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"status\":\"error\",\"message\":\"Unauthenticated\",\"errors\":null}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Checkout",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/checkout",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/checkout"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"address_id\":\"architecto\"}"
+                        },
+                        "description": "Places a new order from the authenticated customer's cart and selected address. Requires customer role."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update order status",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/orders\/:order_id\/status",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/orders\/:order_id\/status",
+                            "variable": [
+                                {
+                                    "id": "order_id",
+                                    "key": "order_id",
+                                    "value": "1",
+                                    "description": "The ID of the order."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"status\":\"delivered\"}"
+                        },
+                        "description": "Updates the status of an order. Requires admin role."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Products",
+            "description": "\nEndpoints for browsing and managing products.",
+            "item": [
+                {
+                    "name": "List products",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/products",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/products"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a paginated list of products with filtering and sorting options.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"status\":\"success\",\"message\":\"\",\"data\":[{\"id\":21,\"name\":\"toy 1\",\"slug\":\"toy-1\",\"description\":\"gggggggggggggggggg\",\"price\":\"1,112.00\",\"stock\":489,\"categories\":[],\"created_at\":\"2026-04-13T06:33:31.000000Z\",\"updated_at\":\"2026-04-13T06:58:13.000000Z\",\"image_url\":null},{\"id\":1,\"name\":\"iPhone 17\",\"slug\":\"iphone-17\",\"description\":\"Latest Apple smartphone.\",\"price\":\"999.00\",\"stock\":10,\"categories\":[{\"id\":1,\"name\":\"Electronics\",\"slug\":\"electronics\",\"description\":null},{\"id\":2,\"name\":\"Apple\",\"slug\":\"apple\",\"description\":null}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":2,\"name\":\"Samsung Galaxy S30\",\"slug\":\"samsung-galaxy-s30\",\"description\":\"Latest Samsung smartphone.\",\"price\":\"899.00\",\"stock\":13,\"categories\":[{\"id\":1,\"name\":\"Electronics\",\"slug\":\"electronics\",\"description\":null},{\"id\":3,\"name\":\"Samsung\",\"slug\":\"samsung\",\"description\":null}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-15T11:24:13.000000Z\",\"image_url\":null},{\"id\":3,\"name\":\"dolor repellat laborum\",\"slug\":\"dolor-repellat-laborum\",\"description\":\"Perferendis rem eaque et saepe est. Libero enim neque et excepturi. Beatae voluptatem sunt dolor nam quo nostrum.\",\"price\":\"823.01\",\"stock\":47,\"categories\":[{\"id\":5,\"name\":\"Unde\",\"slug\":\"unde\",\"description\":\"Est commodi molestias eos officia.\"}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":4,\"name\":\"neque architecto quas\",\"slug\":\"neque-architecto-quas\",\"description\":\"Consequatur illo laudantium qui dolore quisquam aut. Quas laboriosam repellat quasi quae quam quia unde. Eos voluptatem est quisquam aliquid facilis. Ut reiciendis omnis animi commodi.\",\"price\":\"980.38\",\"stock\":95,\"categories\":[{\"id\":5,\"name\":\"Unde\",\"slug\":\"unde\",\"description\":\"Est commodi molestias eos officia.\"}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":5,\"name\":\"dolorem voluptatum aperiam\",\"slug\":\"dolorem-voluptatum-aperiam\",\"description\":\"Velit earum modi deleniti ducimus. Similique facere ut voluptas laboriosam qui placeat. Perspiciatis dolor cupiditate voluptatem inventore excepturi.\",\"price\":\"781.74\",\"stock\":1,\"categories\":[{\"id\":2,\"name\":\"Apple\",\"slug\":\"apple\",\"description\":null},{\"id\":7,\"name\":\"Sint\",\"slug\":\"sint\",\"description\":\"Quod quaerat nobis aut eius illum.\"}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":6,\"name\":\"praesentium et voluptates\",\"slug\":\"praesentium-et-voluptates\",\"description\":\"Laudantium ab consectetur sunt. Magnam aut minus consequatur quibusdam praesentium.\",\"price\":\"295.11\",\"stock\":23,\"categories\":[{\"id\":3,\"name\":\"Samsung\",\"slug\":\"samsung\",\"description\":null}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":7,\"name\":\"dolor perferendis omnis\",\"slug\":\"dolor-perferendis-omnis\",\"description\":\"Consequatur iure expedita odio. Sed vitae ipsum consequatur blanditiis. Similique corporis aut cupiditate rerum occaecati vel ab magnam.\",\"price\":\"519.24\",\"stock\":88,\"categories\":[{\"id\":3,\"name\":\"Samsung\",\"slug\":\"samsung\",\"description\":null},{\"id\":5,\"name\":\"Unde\",\"slug\":\"unde\",\"description\":\"Est commodi molestias eos officia.\"},{\"id\":8,\"name\":\"Esse\",\"slug\":\"esse\",\"description\":\"Voluptas aliquid sit numquam assumenda.\"}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":8,\"name\":\"ratione a qui\",\"slug\":\"ratione-a-qui\",\"description\":\"Ea minus quis id. Voluptas illo porro omnis. Saepe quasi doloribus illum ut iusto et sed. Quisquam eligendi omnis beatae eum illum necessitatibus voluptatem.\",\"price\":\"345.29\",\"stock\":72,\"categories\":[{\"id\":2,\"name\":\"Apple\",\"slug\":\"apple\",\"description\":null},{\"id\":7,\"name\":\"Sint\",\"slug\":\"sint\",\"description\":\"Quod quaerat nobis aut eius illum.\"},{\"id\":8,\"name\":\"Esse\",\"slug\":\"esse\",\"description\":\"Voluptas aliquid sit numquam assumenda.\"}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":9,\"name\":\"nobis illum laboriosam\",\"slug\":\"nobis-illum-laboriosam\",\"description\":\"Vel excepturi velit qui eaque est ut. Velit praesentium consequatur aut voluptatum et nihil quas provident. Nihil nobis molestias sed. Iure sint dolorem molestiae eos autem sit aliquam.\",\"price\":\"903.79\",\"stock\":83,\"categories\":[{\"id\":1,\"name\":\"Electronics\",\"slug\":\"electronics\",\"description\":null},{\"id\":6,\"name\":\"Non\",\"slug\":\"non\",\"description\":\"Autem provident debitis cupiditate eveniet saepe et dolorem.\"}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null}]}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Show product",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/products\/:product_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/products\/:product_id",
+                            "variable": [
+                                {
+                                    "id": "product_id",
+                                    "key": "product_id",
+                                    "value": "1",
+                                    "description": "The ID of the product."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the details of a single product including its categories.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"status\":\"success\",\"message\":\"\",\"data\":{\"id\":1,\"name\":\"iPhone 17\",\"slug\":\"iphone-17\",\"description\":\"Latest Apple smartphone.\",\"price\":\"999.00\",\"stock\":10,\"categories\":[{\"id\":1,\"name\":\"Electronics\",\"slug\":\"electronics\",\"description\":null},{\"id\":2,\"name\":\"Apple\",\"slug\":\"apple\",\"description\":null}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Search products",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/search",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/search"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Searches products by query, category, and price range with pagination.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"status\":\"success\",\"message\":\"\",\"data\":[{\"id\":1,\"name\":\"iPhone 17\",\"slug\":\"iphone-17\",\"description\":\"Latest Apple smartphone.\",\"price\":\"999.00\",\"stock\":10,\"categories\":[{\"id\":1,\"name\":\"Electronics\",\"slug\":\"electronics\",\"description\":null},{\"id\":2,\"name\":\"Apple\",\"slug\":\"apple\",\"description\":null}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":2,\"name\":\"Samsung Galaxy S30\",\"slug\":\"samsung-galaxy-s30\",\"description\":\"Latest Samsung smartphone.\",\"price\":\"899.00\",\"stock\":13,\"categories\":[{\"id\":1,\"name\":\"Electronics\",\"slug\":\"electronics\",\"description\":null},{\"id\":3,\"name\":\"Samsung\",\"slug\":\"samsung\",\"description\":null}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-15T11:24:13.000000Z\",\"image_url\":null},{\"id\":3,\"name\":\"dolor repellat laborum\",\"slug\":\"dolor-repellat-laborum\",\"description\":\"Perferendis rem eaque et saepe est. Libero enim neque et excepturi. Beatae voluptatem sunt dolor nam quo nostrum.\",\"price\":\"823.01\",\"stock\":47,\"categories\":[{\"id\":5,\"name\":\"Unde\",\"slug\":\"unde\",\"description\":\"Est commodi molestias eos officia.\"}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":4,\"name\":\"neque architecto quas\",\"slug\":\"neque-architecto-quas\",\"description\":\"Consequatur illo laudantium qui dolore quisquam aut. Quas laboriosam repellat quasi quae quam quia unde. Eos voluptatem est quisquam aliquid facilis. Ut reiciendis omnis animi commodi.\",\"price\":\"980.38\",\"stock\":95,\"categories\":[{\"id\":5,\"name\":\"Unde\",\"slug\":\"unde\",\"description\":\"Est commodi molestias eos officia.\"}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":5,\"name\":\"dolorem voluptatum aperiam\",\"slug\":\"dolorem-voluptatum-aperiam\",\"description\":\"Velit earum modi deleniti ducimus. Similique facere ut voluptas laboriosam qui placeat. Perspiciatis dolor cupiditate voluptatem inventore excepturi.\",\"price\":\"781.74\",\"stock\":1,\"categories\":[{\"id\":2,\"name\":\"Apple\",\"slug\":\"apple\",\"description\":null},{\"id\":7,\"name\":\"Sint\",\"slug\":\"sint\",\"description\":\"Quod quaerat nobis aut eius illum.\"}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":6,\"name\":\"praesentium et voluptates\",\"slug\":\"praesentium-et-voluptates\",\"description\":\"Laudantium ab consectetur sunt. Magnam aut minus consequatur quibusdam praesentium.\",\"price\":\"295.11\",\"stock\":23,\"categories\":[{\"id\":3,\"name\":\"Samsung\",\"slug\":\"samsung\",\"description\":null}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":7,\"name\":\"dolor perferendis omnis\",\"slug\":\"dolor-perferendis-omnis\",\"description\":\"Consequatur iure expedita odio. Sed vitae ipsum consequatur blanditiis. Similique corporis aut cupiditate rerum occaecati vel ab magnam.\",\"price\":\"519.24\",\"stock\":88,\"categories\":[{\"id\":3,\"name\":\"Samsung\",\"slug\":\"samsung\",\"description\":null},{\"id\":5,\"name\":\"Unde\",\"slug\":\"unde\",\"description\":\"Est commodi molestias eos officia.\"},{\"id\":8,\"name\":\"Esse\",\"slug\":\"esse\",\"description\":\"Voluptas aliquid sit numquam assumenda.\"}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":8,\"name\":\"ratione a qui\",\"slug\":\"ratione-a-qui\",\"description\":\"Ea minus quis id. Voluptas illo porro omnis. Saepe quasi doloribus illum ut iusto et sed. Quisquam eligendi omnis beatae eum illum necessitatibus voluptatem.\",\"price\":\"345.29\",\"stock\":72,\"categories\":[{\"id\":2,\"name\":\"Apple\",\"slug\":\"apple\",\"description\":null},{\"id\":7,\"name\":\"Sint\",\"slug\":\"sint\",\"description\":\"Quod quaerat nobis aut eius illum.\"},{\"id\":8,\"name\":\"Esse\",\"slug\":\"esse\",\"description\":\"Voluptas aliquid sit numquam assumenda.\"}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":9,\"name\":\"nobis illum laboriosam\",\"slug\":\"nobis-illum-laboriosam\",\"description\":\"Vel excepturi velit qui eaque est ut. Velit praesentium consequatur aut voluptatum et nihil quas provident. Nihil nobis molestias sed. Iure sint dolorem molestiae eos autem sit aliquam.\",\"price\":\"903.79\",\"stock\":83,\"categories\":[{\"id\":1,\"name\":\"Electronics\",\"slug\":\"electronics\",\"description\":null},{\"id\":6,\"name\":\"Non\",\"slug\":\"non\",\"description\":\"Autem provident debitis cupiditate eveniet saepe et dolorem.\"}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null},{\"id\":10,\"name\":\"omnis porro quisquam\",\"slug\":\"omnis-porro-quisquam\",\"description\":\"Eaque ab culpa ut maxime aut cupiditate et. Dolores unde ut nisi repellat laborum quisquam.\",\"price\":\"364.32\",\"stock\":47,\"categories\":[{\"id\":2,\"name\":\"Apple\",\"slug\":\"apple\",\"description\":null},{\"id\":7,\"name\":\"Sint\",\"slug\":\"sint\",\"description\":\"Quod quaerat nobis aut eius illum.\"}],\"created_at\":\"2026-04-08T09:28:29.000000Z\",\"updated_at\":\"2026-04-08T09:28:29.000000Z\",\"image_url\":null}]}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create product",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/products",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/products"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "b",
+                                    "type": "text",
+                                    "description": "Must not be greater than 255 characters."
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "Eius et animi quos velit et.",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "price",
+                                    "value": "60",
+                                    "type": "text",
+                                    "description": "Must be at least 0."
+                                },
+                                {
+                                    "key": "stock",
+                                    "value": "42",
+                                    "type": "text",
+                                    "description": "Must be at least 0."
+                                },
+                                {
+                                    "key": "categories[0]",
+                                    "value": "16",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "image",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": "Creates a new product for the authenticated seller or admin. Requires seller or admin role."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update product",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/products\/:product_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/products\/:product_id",
+                            "variable": [
+                                {
+                                    "id": "product_id",
+                                    "key": "product_id",
+                                    "value": "1",
+                                    "description": "The ID of the product."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "b",
+                                    "type": "text",
+                                    "description": "Must not be greater than 255 characters."
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "Eius et animi quos velit et.",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "price",
+                                    "value": "60",
+                                    "type": "text",
+                                    "description": "Must be at least 0."
+                                },
+                                {
+                                    "key": "stock",
+                                    "value": "42",
+                                    "type": "text",
+                                    "description": "Must be at least 0."
+                                },
+                                {
+                                    "key": "categories[0]",
+                                    "value": "16",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "image",
+                                    "src": [],
+                                    "type": "file"
+                                },
+                                {
+                                    "key": "_method",
+                                    "value": "PUT",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "description": "Updates an existing product owned by the authenticated seller or managed by an admin. Requires seller or admin role."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update product",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/products\/:product_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/products\/:product_id",
+                            "variable": [
+                                {
+                                    "id": "product_id",
+                                    "key": "product_id",
+                                    "value": "1",
+                                    "description": "The ID of the product."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "b",
+                                    "type": "text",
+                                    "description": "Must not be greater than 255 characters."
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "Eius et animi quos velit et.",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "price",
+                                    "value": "60",
+                                    "type": "text",
+                                    "description": "Must be at least 0."
+                                },
+                                {
+                                    "key": "stock",
+                                    "value": "42",
+                                    "type": "text",
+                                    "description": "Must be at least 0."
+                                },
+                                {
+                                    "key": "categories[0]",
+                                    "value": "16",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "image",
+                                    "src": [],
+                                    "type": "file"
+                                },
+                                {
+                                    "key": "_method",
+                                    "value": "PATCH",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "description": "Updates an existing product owned by the authenticated seller or managed by an admin. Requires seller or admin role."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete product",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/products\/:product_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/products\/:product_id",
+                            "variable": [
+                                {
+                                    "id": "product_id",
+                                    "key": "product_id",
+                                    "value": "1",
+                                    "description": "The ID of the product."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Deletes a product owned by the authenticated seller or managed by an admin. Requires seller or admin role."
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "Authorization",
+                "type": "string"
+            }
+        ]
+    }
+}

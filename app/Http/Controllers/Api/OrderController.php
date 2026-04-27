@@ -11,9 +11,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
+/**
+ * @group Orders
+ *
+ * Endpoints for placing orders and managing order workflows.
+ */
 class OrderController extends Controller
 {
-    // Browse orders for admin and customer
+    /**
+     * List orders
+     *
+     * Returns orders for the authenticated user based on role visibility (admin, seller, or customer). Requires authentication.
+     */
     public function index(Request $request){
         $user = $request->user();
 
@@ -49,7 +58,11 @@ class OrderController extends Controller
         return $this->success(OrderResource::collection($query->get()));
     }
 
-    // View placed order
+    /**
+     * Show order
+     *
+     * Returns details for a specific order if the authenticated user is allowed to view it. Requires authentication.
+     */
     public function show(Request $request , Order $order){
         $order->load('items.product');
 
@@ -58,7 +71,11 @@ class OrderController extends Controller
         return $this->success(new OrderResource($order));
     }
 
-    // Update pleced order's status
+    /**
+     * Update order status
+     *
+     * Updates the status of an order. Requires admin role.
+     */
     public function updateStatus(Request $request, Order $order){
         $this->authorize('update', $order);
 
@@ -71,7 +88,11 @@ class OrderController extends Controller
         return $this->success(new OrderResource($order), 'Order status updated successfully');
     }
 
-    // Checkout by customer
+    /**
+     * Checkout
+     *
+     * Places a new order from the authenticated customer's cart and selected address. Requires customer role.
+     */
     public function checkout(Request $request){
         $this->authorize('create', Order::class);
         // Validate address

@@ -7,13 +7,28 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\AddressResource;
 use Illuminate\Http\Request;
 
+/**
+ * @group Addresses
+ *
+ * Endpoints for managing customer shipping addresses.
+ */
 class AddressController extends Controller
 {
+    /**
+     * List addresses
+     *
+     * Returns all saved addresses for the authenticated customer. Requires customer role.
+     */
     public function index(Request $request)
     {
         return $this->success(AddressResource::collection($request->user()->addresses));
     }
     
+    /**
+     * Create address
+     *
+     * Creates a new address for the authenticated customer. Requires customer role.
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -28,6 +43,11 @@ class AddressController extends Controller
         return $this->success(new AddressResource($address), 'Address created successfully', 201);
     }
 
+    /**
+     * Update address
+     *
+     * Updates an existing address owned by the authenticated customer. Requires customer role.
+     */
     public function update(Request $request, Address $address) {
         $this->authorize('update', $address);
 
@@ -44,6 +64,11 @@ class AddressController extends Controller
         return $this->success(new AddressResource($address), 'Address updated successfully');
     }
     
+    /**
+     * Delete address
+     *
+     * Deletes an address owned by the authenticated customer. Requires customer role.
+     */
     public function destroy(Address $address) {
         $this->authorize('delete', $address);
         $address->delete();

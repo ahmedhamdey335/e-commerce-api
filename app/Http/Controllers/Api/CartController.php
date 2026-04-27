@@ -9,14 +9,29 @@ use App\Models\Product;
 use App\Http\Requests\AddToCartRequest;
 use App\Http\Resources\CartItemResource;
 
+/**
+ * @group Cart
+ *
+ * Endpoints for managing the authenticated customer's shopping cart.
+ */
 class CartController extends Controller
 {
+    /**
+     * List cart items
+     *
+     * Returns all cart items for the authenticated customer. Requires customer role.
+     */
     public function index(Request $request)
     {
         $items = $request->user()->cartItems()->with('product')->get();
         return $this->success(CartItemResource::collection($items));
     }
 
+    /**
+     * Add to cart
+     *
+     * Adds a product to the authenticated customer's cart or increases quantity if it already exists. Requires customer role.
+     */
     public function store(AddToCartRequest $request)
     {
         $validated = $request->validated();
@@ -43,6 +58,11 @@ class CartController extends Controller
         return $this->success(new CartItemResource($cartItem->load('product')), 'Item added to cart successfully', 201);
     }
     
+    /**
+     * Remove cart item
+     *
+     * Removes a cart item belonging to the authenticated customer. Requires customer role.
+     */
     public function destroy(Request $request, CartItem $cartItem) {
         // Ensure the cart belongs to the authenticated user
         if ($request->user()->id !== $cartItem->user_id) {

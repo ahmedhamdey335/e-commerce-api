@@ -1,0 +1,161 @@
+name: Cart
+description: |-
+
+  Endpoints for managing the authenticated customer's shopping cart.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/cart
+    metadata:
+      custom: []
+      groupName: Cart
+      groupDescription: |-
+
+        Endpoints for managing the authenticated customer's shopping cart.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List cart items'
+      description: 'Returns all cart items for the authenticated customer. Requires customer role.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"status":"error","message":"Unauthenticated","errors":null}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/cart
+    metadata:
+      custom: []
+      groupName: Cart
+      groupDescription: |-
+
+        Endpoints for managing the authenticated customer's shopping cart.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Add to cart'
+      description: "Adds a product to the authenticated customer's cart or increases quantity if it already exists. Requires customer role."
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      product_id:
+        custom: []
+        name: product_id
+        description: 'The <code>id</code> of an existing record in the products table.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      quantity:
+        custom: []
+        name: quantity
+        description: 'Must be at least 1.'
+        required: true
+        example: 22
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      product_id: 16
+      quantity: 22
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/cart/{cartItem_id}'
+    metadata:
+      custom: []
+      groupName: Cart
+      groupDescription: |-
+
+        Endpoints for managing the authenticated customer's shopping cart.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Remove cart item'
+      description: 'Removes a cart item belonging to the authenticated customer. Requires customer role.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      cartItem_id:
+        custom: []
+        name: cartItem_id
+        description: 'The ID of the cartItem.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      cartItem_id: 16
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

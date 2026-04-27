@@ -10,10 +10,19 @@ use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Request;
 
+/**
+ * @group Categories
+ *
+ * Endpoints for browsing and managing product categories.
+ */
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * List categories
+     *
+     * Returns all available product categories.
+     *
+     * @unauthenticated
      */
     public function index()
     {
@@ -21,7 +30,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create category
+     *
+     * Creates a new product category. Requires admin role.
      */
     public function store(StoreCategoryRequest $request)
     {
@@ -32,7 +43,11 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Show category
+     *
+     * Returns a category with its related products.
+     *
+     * @unauthenticated
      */
     public function show(Category $category)
     {
@@ -40,7 +55,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update category
+     *
+     * Updates an existing product category. Requires admin role.
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
@@ -54,7 +71,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete category
+     *
+     * Deletes a product category. Requires admin role.
      */
     public function destroy(Category $category)
     {
