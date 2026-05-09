@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CheckoutRequest;
+use App\Http\Requests\UpdateOrderStatusRequest;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Http\Resources\OrderResource;
@@ -76,14 +78,11 @@ class OrderController extends Controller
      *
      * Updates the status of an order. Requires admin role.
      */
-    public function updateStatus(Request $request, Order $order){
+    public function updateStatus(UpdateOrderStatusRequest $request, Order $order){
         $this->authorize('update', $order);
 
-        $request->validate([
-            'status' => 'required|in:pending,processing,shipped,delivered,cancelled',
-        ]);
-
-        $order->update(['status' => $request->status]);
+        $validated = $request->validated();
+        $order->update(['status' => $validated['status']]);
 
         return $this->success(new OrderResource($order), 'Order status updated successfully');
     }
@@ -93,17 +92,14 @@ class OrderController extends Controller
      *
      * Places a new order from the authenticated customer's cart and selected address. Requires customer role.
      */
-    public function checkout(Request $request){
+    public function checkout(CheckoutRequest $request){
         $this->authorize('create', Order::class);
-        // Validate address
-        $request->validate([
-            'address_id' => 'required|exists:addresses,id',
-        ]);
-        
+
+        $validated = $request->validated();
         $user = $request->user();
-        
+
         // Ensure the address belongs to the user
-        $address = $user->addresses()->where('id', $request->address_id)->first();
+        $address = $user->addresses()->where('id', $validated['address_id'])->first();
         if (!$address) {
             return $this->error('Invalid address', 400);
         }

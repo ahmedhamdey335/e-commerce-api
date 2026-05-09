@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "E-Commerce API",
-        "_postman_id": "10c10fb7-06ab-4980-bce8-67f21fffc1db",
+        "_postman_id": "755f1b59-6a5d-438e-9424-7e93cb8e08d5",
         "description": "A full-featured e-commerce REST API built with Laravel 12.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -189,7 +189,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"b\",\"email\":\"zbailey@example.net\",\"password\":\"-0pBNvYgxw\"}"
+                            "raw": "{\"name\":\"b\",\"email\":\"zbailey@example.net\",\"password\":\"-0pBNvYgxw\",\"password_confirmation\":\"architecto\"}"
                         },
                         "description": "Creates a new customer account and returns an access token.",
                         "auth": {
@@ -223,6 +223,68 @@
                             "raw": "{\"email\":\"gbailey@example.net\",\"password\":\"|]|{+-\"}"
                         },
                         "description": "Authenticates a user and returns an access token.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Forgot Password\n\nSends a password reset link to the user's email.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/forgot-password",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/forgot-password"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"gbailey@example.net\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Reset Password\n\nResets the user password using the token from the email.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/reset-password",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/reset-password"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"gbailey@example.net\",\"token\":\"architecto\",\"password\":\"]|{+-0pBNvYg\"}"
+                        },
+                        "description": "",
                         "auth": {
                             "type": "noauth"
                         }
@@ -822,7 +884,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"status\":\"delivered\"}"
+                            "raw": "{\"status\":\"cancelled\"}"
                         },
                         "description": "Updates the status of an order. Requires admin role."
                     },

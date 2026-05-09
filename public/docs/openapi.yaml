@@ -192,10 +192,15 @@ paths:
                   type: string
                   description: 'Must be at least 8 characters.'
                   example: '-0pBNvYgxw'
+                password_confirmation:
+                  type: string
+                  description: 'The value and <code>password</code> must match.'
+                  example: architecto
               required:
                 - name
                 - email
                 - password
+                - password_confirmation
       security: []
   /api/login:
     post:
@@ -223,6 +228,62 @@ paths:
                   example: '|]|{+-'
               required:
                 - email
+                - password
+      security: []
+  /api/forgot-password:
+    post:
+      summary: "Forgot Password\n\nSends a password reset link to the user's email."
+      operationId: forgotPasswordSendsAPasswordResetLinkToTheUsersEmail
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address. The <code>email</code> of an existing record in the users table.'
+                  example: gbailey@example.net
+              required:
+                - email
+      security: []
+  /api/reset-password:
+    post:
+      summary: "Reset Password\n\nResets the user password using the token from the email."
+      operationId: resetPasswordResetsTheUserPasswordUsingTheTokenFromTheEmail
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address. The <code>email</code> of an existing record in the users table.'
+                  example: gbailey@example.net
+                token:
+                  type: string
+                  description: ''
+                  example: architecto
+                password:
+                  type: string
+                  description: 'Must be at least 8 characters.'
+                  example: ']|{+-0pBNvYg'
+              required:
+                - email
+                - token
                 - password
       security: []
   /api/logout:
@@ -847,7 +908,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: delivered
+                  example: cancelled
                   enum:
                     - pending
                     - processing
