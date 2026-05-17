@@ -24,12 +24,12 @@ class AuthController extends Controller
      * @unauthenticated
      */
     public function register(RegisterRequest $request){
-        $request->validated();
+        $validated = $request->validated();
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
             'role' => 'customer'
         ]);
 

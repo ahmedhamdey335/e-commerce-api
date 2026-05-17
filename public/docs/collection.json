@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "E-Commerce API",
-        "_postman_id": "755f1b59-6a5d-438e-9424-7e93cb8e08d5",
+        "_postman_id": "65af1717-377d-4d05-9ddc-2cbc45a5b14b",
         "description": "A full-featured e-commerce REST API built with Laravel 12.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -884,7 +884,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"status\":\"cancelled\"}"
+                            "raw": "{\"status\":\"processing\"}"
                         },
                         "description": "Updates the status of an order. Requires admin role."
                     },

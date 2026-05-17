@@ -15,20 +15,12 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, string ...$roles): Response
     {
-        if (! $request->user()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Unauthenticated',
-                'errors' => null,
-            ], 401);
+        if (!$request-> user()) {
+            return response()->json(['message' => 'Unauthenticated.'], 401); 
         }
 
-        if (! in_array($request->user()->role, $roles, true)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'You do not have permission',
-                'errors' => null,
-            ], 403);
+        if (!in_array($request->user()->role, $roles)){
+        return response()->json(['message'=> 'You do not have permission'], 403);
         }
         
         return $next($request);

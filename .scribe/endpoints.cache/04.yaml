@@ -201,7 +201,7 @@ endpoints:
         name: status
         description: ''
         required: true
-        example: cancelled
+        example: processing
         type: string
         enumValues:
           - pending
@@ -213,7 +213,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      status: cancelled
+      status: processing
     fileParameters: []
     responses: []
     responseFields: []

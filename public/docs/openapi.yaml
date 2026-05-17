@@ -908,7 +908,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: cancelled
+                  example: processing
                   enum:
                     - pending
                     - processing
